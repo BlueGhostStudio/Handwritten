@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Page1Form.ui.qml</file>
+        <file>Page2Form.ui.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>Components/BGMRPC/BGMRPC.qml</file>
+        <file>Components/BGMRPC/qmldir</file>
+        <file>Components/Handwritten/HandwrittenRemote.qml</file>
+        <file>Components/Handwritten/HWCanvas.qml</file>
+        <file>Components/Handwritten/HWColor.js</file>
+        <file>Components/Handwritten/HWPaint.qml</file>
+        <file>Components/Handwritten/PaperDefine.qml</file>
+        <file>Components/Handwritten/Properties.qml</file>
+        <file>Components/Handwritten/qmldir</file>
+        <file>Components/Handwritten/StrokeDefine.qml</file>
+        <file>Components/Handwritten/SOPModel.qml</file>
+        <file>Components/Handwritten/SlipOfPaperCanvas.qml</file>
+        <file>Components/Handwritten/SOPListView.qml</file>
+    </qresource>
+    <qresource prefix="/imgs">
+        <file alias="brush-black-1.png">Components/Handwritten/imgs/brush-black-1.png</file>
+        <file alias="brush-black.png">Components/Handwritten/imgs/brush-black.png</file>
+        <file alias="brush-blue-1.png">Components/Handwritten/imgs/brush-blue-1.png</file>
+        <file alias="brush-blue.png">Components/Handwritten/imgs/brush-blue.png</file>
+        <file alias="brush-red-1.png">Components/Handwritten/imgs/brush-red-1.png</file>
+        <file alias="brush-red.png">Components/Handwritten/imgs/brush-red.png</file>
+        <file alias="paper.png">Components/Handwritten/imgs/paper.png</file>
+    </qresource>
+</RCC>

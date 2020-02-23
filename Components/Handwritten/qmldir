@@ -1,0 +1,10 @@
+module Handwritten
+singleton HWR 1.0 HandwrittenRemote.qml
+singleton Properties 1.0 Properties.qml
+HWCanvas 1.0 HWCanvas.qml
+HWPaint 1.0 HWPaint.qml
+PaperDefine 1.0 PaperDefine.qml
+StrokeDefine 1.0 StrokeDefine.qml
+SlipOfPaperCanvas 1.0 SlipOfPaperCanvas.qml
+SOPModel 1.0 SOPModel.qml
+SOPListView 1.0 SOPListView.qml
