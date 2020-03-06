@@ -9,7 +9,7 @@ BGMRPC {
     url: "ws://116.196.18.41:8000"
 
     signal newSlipOfPaper(int sopid, string from, int datetime)
-    signal joined(var inbox)
+    signal joined()
 
     onStatusChanged: {
         if (status === WebSocket.Open) {
@@ -30,22 +30,29 @@ BGMRPC {
 
     function join(name) {
         asyncCall("Handwritten", "js", "join", name).then(function (ret) {
-            joined(ret)
+            joined()
         })
+    }
+
+    // Slip of Paper
+    function slipOfPaperInbox() {
+        return asyncCall("Handwritten", "js", "slipOfPaperInbox")
     }
     function createSlipOfPaper(to, paper) {
         return asyncCall("Handwritten", "js", "createSlipOfPaper", to, paper)
     }
-    function write_slipOfPaper(sopid, stroke) {
+    function write_slipOfPaper(sopid, stroke, sync) {
+        if (!sync)
+            remoteSignal("Handwritten", "stroke", [0, sopid, stroke])
         return asyncCall("Handwritten", "js", "write_slipOfPaper",
-                         sopid, stroke)
+                         sopid, stroke, sync)
     }
     function endSlipOfPaper(sopid) {
         return asyncCall("Handwritten", "js", "end_slipOfPaper", sopid)
     }
-    function getSlipOfPaperCache(sopid) {
+    /*function getSlipOfPaperCache(sopid) {
         return asyncCall("Handwritten", "js", "getSlipOfPaperCache", sopid)
-    }
+    }*/
     function getSlipOfPaperTemp(sopid, slice) {
         return asyncCall("Handwritten", "js", "getSlipOfPaperTemp", sopid,
                          slice).then(function (ret) {
@@ -80,5 +87,10 @@ BGMRPC {
         //        console.log("getPaperDefine", id, type, realtime)
         return asyncCall("Handwritten", "js", "getPaperDefine", id,
                          type, realtime)
+    }
+
+    // Manuscript
+    function write_manuscript(mid, stroke) {
+        return asyncCall("Handwritten", "js", "write_manuscript", mid, stroke)
     }
 }

@@ -1,8 +1,8 @@
 import QtQuick 2.13
 
 QtObject {
-    property int width: 266
-    property int height: 266
+    property int width: 794
+    property int height: 1123
     property var stroke_color
     property var stroke_color_draft
     property list<Image> stroke_brush: [
@@ -14,7 +14,6 @@ QtObject {
     property var background_image: ""
 
     function initial (define) {
-        console.log("---->", Properties.paper.stroke_brush[0])
         if (define === -1) {
             stroke_color = Properties.paper.stroke_color
             stroke_color_draft = Properties.paper.stroke_color_draft

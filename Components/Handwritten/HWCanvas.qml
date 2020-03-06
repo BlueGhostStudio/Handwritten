@@ -6,7 +6,19 @@ Canvas {
     contextType: "2d"
     property var hwID
     property var range: [Number.MAX_VALUE, Number.MAX_VALUE, 0, 0]
-    property string paperType: "SlipOfPaper"
+    property int hwType: 0
+    property string paperType: {
+        switch (hwType) {
+        case 0:
+            "SlipOfPaper"
+            break;
+        case 1:
+            "Letter"
+            break;
+        case 2:
+            "Manuscript"
+        }
+    }
     property PaperDefine paperDefine: PaperDefine {}
     canvasSize.width: paperDefine.width
     canvasSize.height: paperDefine.height
@@ -97,9 +109,9 @@ Canvas {
                             stroke.preSize / 2, 0, 2 * Math.PI)
         } else {
             var sr = Math.acos((maxRadius - minRadius) / dist)
-            context.arc(stroke.prePos.x, stroke.prePos.y, stroke.size / 2,
+            context.arc(stroke.prePos.x, stroke.prePos.y, stroke.preSize / 2,
                         r1 - sr, r1 + sr, true)
-            context.arc(stroke.pos.x, stroke.pos.y, stroke.preSize / 2,
+            context.arc(stroke.pos.x, stroke.pos.y, stroke.size / 2,
                         r1 + sr, r1 - sr, true)
             context.closePath()
         }
@@ -146,26 +158,27 @@ Canvas {
     Connections {
         target: HWR
         onRemoteSignal: {
-            if (obj !== "Handwritten" || sig !== "stroke" || args[0] !== hwID)
+            console.log("in onRemoteSignal", sig, args[0], args[1], hwID)
+            if (obj !== "Handwritten" || sig !== "stroke" || args[0] !== hwType || args[1] !== hwID)
                 return
 
-            switch (args[1].type) {
+            switch (args[2].type) {
             case 0:
-                ballpointStroke(args[1])
+                ballpointStroke(args[2])
                 break
             case 1:
-                penStroke(args[1])
+                penStroke(args[2])
                 break
             case 2:
-                paintStroke(args[1])
+                paintStroke(args[2])
                 break
             }
         }
     }
 
-    function initial(sopid, realtime) {
-        return HWR.getPaperDefine(sopid, paperType,
-                                  realtime).then(function (ret) {
+    function initial(sopid/*, realtime*/) {
+        return HWR.getPaperDefine(sopid, paperType/*,
+                                  realtime*/).then(function (ret) {
                                       if (ret === false)
                                           paperDefine.initial(-1)
                                       else

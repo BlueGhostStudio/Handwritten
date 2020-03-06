@@ -183,7 +183,7 @@ Flickable {
 
                         switch (type) {
                         case 0:
-                            HWR.write_slipOfPaper(hwID, stroke)
+                            HWR.write_slipOfPaper(hwID, stroke, true)
 
                             break
                         }
@@ -224,7 +224,7 @@ Flickable {
 
     function initial() {
         canvas.enabled = false
-        canvas.initial(hwID, true).then(function (ret) {
+        canvas.initial(hwID/*, true*/).then(function (ret) {
             if (ret.stroke.length > 0)
                 strokeDefine.initial(ret.stroke)
             else

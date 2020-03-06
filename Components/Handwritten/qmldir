@@ -1,10 +1,16 @@
 module Handwritten
 singleton HWR 1.0 HandwrittenRemote.qml
 singleton Properties 1.0 Properties.qml
+singleton Properties 1.1 Properties11.qml
+singleton HWLI 1.0 HWListItemCmp.qml
 HWCanvas 1.0 HWCanvas.qml
 HWPaint 1.0 HWPaint.qml
+HWPaint 1.1 HWPaint11.qml
 PaperDefine 1.0 PaperDefine.qml
 StrokeDefine 1.0 StrokeDefine.qml
+StrokeDefine 1.1 StrokeDefine11.qml
 SlipOfPaperCanvas 1.0 SlipOfPaperCanvas.qml
+SlipOfPaper 1.0 SlipOfPaper.qml
 SOPModel 1.0 SOPModel.qml
 SOPListView 1.0 SOPListView.qml
+HWSettings 1.1 Settings11.qml

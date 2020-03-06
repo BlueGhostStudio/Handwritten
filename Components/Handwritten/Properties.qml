@@ -20,9 +20,9 @@ QtObject {
         property var stroke_color: ["#000000", "#143c77", "#9d0000"]
 //        property var stroke_color_draft: ["#66000000", "#66143c77", "#669d0000"]
         property var stroke_brush: [
-            "imgs/brush-black.png",
-            "imgs/brush-blue.png",
-            "imgs/brush-red.png"
+            "qrc:/imgs/brush-black.png",
+            "qrc:/imgs/brush-blue.png",
+            "qrc:/imgs/brush-red.png"
         ]
     }
     property Settings mis: Settings {

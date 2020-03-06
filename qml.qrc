@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>Page1Form.ui.qml</file>
-        <file>Page2Form.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>Components/BGMRPC/BGMRPC.qml</file>
         <file>Components/BGMRPC/qmldir</file>
@@ -17,6 +15,34 @@
         <file>Components/Handwritten/SOPModel.qml</file>
         <file>Components/Handwritten/SlipOfPaperCanvas.qml</file>
         <file>Components/Handwritten/SOPListView.qml</file>
+        <file>Components/Handwritten/HWListItemCmp.qml</file>
+        <file>Components/Handwritten/SlipOfPaper.qml</file>
+        <file>HomeForm.ui.qml</file>
+        <file>Components/Ui/InboxPage.qml</file>
+        <file>HandWritten_zh_CN.qm</file>
+        <file>Components/Handwritten/SOPInboxItem.qml</file>
+        <file>SlipOfPaper/NewSlipOfPaperPage.qml</file>
+        <file>SlipOfPaper/SlipOfPaperInbox.ui.qml</file>
+        <file>SlipOfPaper/PaperSelector.qml</file>
+        <file>SlipOfPaper/SlipOfPaperViewPage.qml</file>
+        <file>Components/Ui/PaperButton.qml</file>
+        <file>Components/Ui/ColorButton.qml</file>
+        <file>Components/Ui/PenButton.qml</file>
+        <file>Components/Handwritten/HWPaint11.qml</file>
+        <file>Components/Handwritten/StrokeDefine11.qml</file>
+        <file>Components/Handwritten/Properties11.qml</file>
+        <file>Components/Handwritten/Settings11.qml</file>
+        <file>Components/Ui/SubPage.qml</file>
+        <file>Components/Ui/NumberField.qml</file>
+        <file>SettingsPage.qml</file>
+        <file>Letter/LetterlInbox.ui.qml</file>
+        <file>Manuscript/ManuscriptBookShelf.ui.qml</file>
+        <file>Components/Ui/ToolButton.qml</file>
+        <file>Components/Ui/ItemDelegate.qml</file>
+        <file>Components/Ui/RoundButton.qml</file>
+        <file>LoginPage.ui.qml</file>
+        <file>Components/Ui/TopLevelPage.qml</file>
+        <file>Components/Handwritten/ManuscriptCanvas.qml</file>
     </qresource>
     <qresource prefix="/imgs">
         <file alias="brush-black-1.png">Components/Handwritten/imgs/brush-black-1.png</file>
@@ -26,5 +52,23 @@
         <file alias="brush-red-1.png">Components/Handwritten/imgs/brush-red-1.png</file>
         <file alias="brush-red.png">Components/Handwritten/imgs/brush-red.png</file>
         <file alias="paper.png">Components/Handwritten/imgs/paper.png</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file alias="back.png">Components/Handwritten/icons/back.png</file>
+        <file alias="ballPointPen.png">Components/Handwritten/icons/ballPointPen.png</file>
+        <file alias="hand.png">Components/Handwritten/icons/hand.png</file>
+        <file alias="new.png">Components/Handwritten/icons/new.png</file>
+        <file alias="paint.png">Components/Handwritten/icons/paint.png</file>
+        <file alias="pen.png">Components/Handwritten/icons/pen.png</file>
+        <file alias="reply.png">Components/Handwritten/icons/reply.png</file>
+        <file alias="send.png">Components/Handwritten/icons/send.png</file>
+        <file alias="settings.png">Components/Handwritten/icons/settings.png</file>
+        <file alias="thick.png">Components/Handwritten/icons/thick.png</file>
+        <file alias="thin.png">Components/Handwritten/icons/thin.png</file>
+        <file alias="zoom_1.png">Components/Handwritten/icons/zoom_1.png</file>
+        <file alias="zoomIn.png">Components/Handwritten/icons/zoomIn.png</file>
+        <file alias="goNext.png">Components/Handwritten/icons/goNext.png</file>
+        <file alias="goBack.png">Components/Handwritten/icons/goBack.png</file>
+        <file alias="HWIcon.png">Components/Handwritten/icons/HWIcon.png</file>
     </qresource>
 </RCC>
