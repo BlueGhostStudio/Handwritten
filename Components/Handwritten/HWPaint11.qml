@@ -7,13 +7,14 @@ Flickable {
     id: root
     property HWCanvas canvas: HWCanvas {
         anchors.fill: parent
-        hwType: 0//root.hwType
+        //        hwType: 0//root.hwType
         hwID: root.hwID
-//        paperDefine: root.paperDefine
+        //        paperDefine: root.paperDefine
         z: -1
     }
     property real testDist: 0
 
+    property var hwInterface: canvas.hwInterface
     property bool writeMode: false // 0 view 1 write
     property int hwType: canvas.hwType
     property var hwID
@@ -31,11 +32,10 @@ Flickable {
 
     property var showScrollbarOS: ["linux", "windows", "unix", "osx"]
 
-    signal topLeftClicked()
-    signal topRightClicked()
-    signal bottomRightClicked()
-    signal bottomLeftClicked()
-
+    signal topLeftClicked
+    signal topRightClicked
+    signal bottomRightClicked
+    signal bottomLeftClicked
 
     property int zoom: 0
 
@@ -43,8 +43,8 @@ Flickable {
 
     state: ""
 
-    contentWidth: canvasWrap.width * canvasWrap.scale//(zoom === 0 ? Properties.mis.paperRatio : Properties.mis.zoomFactor)
-    contentHeight: canvasWrap.height * canvasWrap.scale//(zoom === 0 ? Properties.mis.paperRatio : Properties.mis.zoomFactor)
+    contentWidth: canvasWrap.width * canvasWrap.scale //(zoom === 0 ? Properties.mis.paperRatio : Properties.mis.zoomFactor)
+    contentHeight: canvasWrap.height * canvasWrap.scale //(zoom === 0 ? Properties.mis.paperRatio : Properties.mis.zoomFactor)
     interactive: false
 
     QtObject {
@@ -63,8 +63,8 @@ Flickable {
     Item {
         id: canvasWrap
 
-        width: canvas.paperDefine.width//canvas.canvasSize.width
-        height: canvas.paperDefine.height//canvas.canvasSize.height
+        width: canvas.paperDefine.width //canvas.canvasSize.width
+        height: canvas.paperDefine.height //canvas.canvasSize.height
         transformOrigin: Item.TopLeft
         scale: /*Properties.mis.paperRatio*/ {
             switch (zoom) {
@@ -86,8 +86,12 @@ Flickable {
             property var beginPos
 
             touchPoints: [
-                TouchPoint { id: point1 },
-                TouchPoint { id: point2 }
+                TouchPoint {
+                    id: point1
+                },
+                TouchPoint {
+                    id: point2
+                }
             ]
             mouseEnabled: true
 
@@ -99,7 +103,10 @@ Flickable {
                 }
             }
             onReleased: {
-                if ((root.state === "readyToWrite" || (!writeMode && root.state === "readyToPan"))/* && autoScroll*/) {
+                if ((root.state === "readyToWrite"
+                     || (!writeMode
+                         && root.state === "readyToPan")) /* && autoScroll*/
+                        ) {
                     var ca = clickedArea(point1)
                     scrollUp(ca)
                     scrollRight(ca)
@@ -111,12 +118,13 @@ Flickable {
                     bottomRightCorner(ca)
                     bottomLeftCorner(ca)
                 }
-//                    trAutoScroll.restart()
+                //                    trAutoScroll.restart()
                 root.state = ""
             }
             onTouchUpdated: {
-                function pan () {
-                    if (root.state === "readyToPan" || root.state === "panning") {
+                function pan() {
+                    if (root.state === "readyToPan"
+                            || root.state === "panning") {
                         root.state = "panning"
                         var orgCX = root.contentX
                         var orgCY = root.contentY
@@ -128,7 +136,7 @@ Flickable {
                                     Math.min(
                                         root.contentY + beginPos.y - point1.y,
                                         root.contentHeight - root.height), 0)
-                    } else if (root.state === "" || writeMode){
+                    } else if (root.state === "" || writeMode) {
                         root.state = "readyToPan"
                         beginPos = {
                             "x": point1.x,
@@ -152,15 +160,18 @@ Flickable {
                                 pre.size = strokeDefine.ballPointPen[strokeSize]
                                 break
                             case 1:
-                                pre.size = calcStrokeSize(strokeDefine.pen[strokeSize * 2],
-                                                          strokeDefine.pen[strokeSize * 2 + 1])
+                                pre.size = calcStrokeSize(
+                                            strokeDefine.pen[strokeSize * 2],
+                                            strokeDefine.pen[strokeSize * 2 + 1])
                                 break
                             case 2:
-                                pre.size = calcStrokeSize(strokeDefine.paint[strokeSize *2],
-                                                          strokeDefine.paint[strokeSize * 2 + 1])
+                                pre.size = calcStrokeSize(
+                                            strokeDefine.paint[strokeSize * 2],
+                                            strokeDefine.paint[strokeSize * 2 + 1])
                                 break
                             }
-                        } else if (root.state === "readyToWrite" || root.state === "writting") {
+                        } else if (root.state === "readyToWrite"
+                                   || root.state === "writting") {
                             var dx = point1.x - pre.pos.x
                             var dy = point1.y - pre.pos.y
                             var dist = Math.pow(dx * dx + dy * dy, 0.5)
@@ -185,14 +196,11 @@ Flickable {
                                 break
                             case 1:
                             case 2:
-                                stroke.size = calcStrokeSize(strokeType === 1
-                                                             ? strokeDefine.pen[strokeSize * 2]
-                                                             : strokeDefine.paint[strokeSize * 2],
-                                                             strokeType === 1
-                                                             ? strokeDefine.pen[strokeSize * 2 + 1]
-                                                             : strokeDefine.paint[strokeSize * 2 + 1], pre.size, dist)
+                                stroke.size = calcStrokeSize(strokeType === 1 ? strokeDefine.pen[strokeSize * 2] : strokeDefine.paint[strokeSize * 2], strokeType === 1 ? strokeDefine.pen[strokeSize * 2 + 1] : strokeDefine.paint[strokeSize * 2 + 1], pre.size,
+                                                             dist)
                                 stroke.preSize = pre.size
-                                stroke.shade = Number(strokeDefine.shade[strokeSize])
+                                stroke.shade = Number(
+                                            strokeDefine.shade[strokeSize])
                                 //                            pre.size = stroke.size
                                 var minRadius = Math.min(pre.size, stroke.size)
                                 var maxRadius = Math.max(pre.size, stroke.size)
@@ -208,14 +216,16 @@ Flickable {
                                 "y": point1.y
                             }
 
-                            switch(hwType) {
+                            hwInterface.write(hwID, stroke, sync)
+
+                            /*switch(hwType) {
                             case 0:
                                 HWR.write_slipOfPaper(hwID, stroke, sync)
                                 break
                             case 2:
                                 HWR.write_manuscript(hwID, stroke)
                                 break
-                            }
+                            }*/
                         }
                     } else {
                         pan()
@@ -223,27 +233,29 @@ Flickable {
                 }
             }
 
-            function calcStrokeSize (minSize, maxSize, preSize, dist) {
+            function calcStrokeSize(minSize, maxSize, preSize, dist) {
                 minSize = Number(minSize)
                 maxSize = Number(maxSize)
                 var minPressure = Properties.writting.pressure[0]
                 var maxPressure = Properties.writting.pressure[1]
-//                console.log("--->", minSize, maxSize, minPressure, maxPressure)
+                //                console.log("--->", minSize, maxSize, minPressure, maxPressure)
                 if (point1.pressure >= 0) {
                     var a = maxPressure - minPressure
-                    var b = Math.min(Math.max(point1.pressure, minPressure), maxPressure) - minPressure
+                    var b = Math.min(Math.max(point1.pressure, minPressure),
+                                     maxPressure) - minPressure
                     var c = maxSize - minSize
                     //                    c/a = x/b
-                    return Math.round((minSize + b/a * c) * 100) / 100
+                    return Math.round((minSize + b / a * c) * 100) / 100
                     //                    return point1.pressure * 20//0.2 / 4 = point1.pressure / x
                 } else {
                     //console.log(dist)
-//                    testDist = Math.max(testDist, dist || 0)
-//                    console.log(testDist)
-                    var md = 3.34/*11.84*//*33.4*/
+                    //                    testDist = Math.max(testDist, dist || 0)
+                    //                    console.log(testDist)
+                    var md = 3.34 /*11.84*/
+                    /*33.4*/
                     var d = dist || md
                     var p = 1 - Math.min(d, md) / md
-//                    console.log ((maxSize - minSize) * p)
+                    //                    console.log ((maxSize - minSize) * p)
                     var s = (maxSize - minSize) * p + minSize
                     if (!preSize)
                         return s
@@ -253,16 +265,17 @@ Flickable {
                         return Math.max(s, preSize * 0.5)
                     }
 
-//                    console.log (s)
-//                    return Math.round(s * 100) / 100
+                    //                    console.log (s)
+                    //                    return Math.round(s * 100) / 100
                 }
             }
         }
     }
 
-//    onVguideChanged: guidelines.requestPaint()
+    //    onVguideChanged: guidelines.requestPaint()
 
-    function initial() {
+
+    /*function initial() {
         canvas.enabled = false
         return canvas.initial(hwID).then(function (ret) {
             if (ret !== false && ret.stroke.length > 0)
@@ -273,15 +286,24 @@ Flickable {
 
             return Promise.resolve(123)
         })
+    }*/
+    function initialStroke(sd) {
+        strokeDefine.initial(sd ? sd : -1)
+        strokeDefineChanged()
+
+        return Promise.resolve()
+    }
+    function initialPaper(pd) {
+        canvas.initial(pd)
     }
 
-    function pointScrollToCenter (r) {
+    function pointScrollToCenter(r) {
         var cd = contentWidth
         var cf = contentX + root.width / 2
         var fd = cd - cf
         var ab = cd * /*Properties.mis.paperRatio*/ r / canvasWrap.scale
         var r1 = cf / fd
-        var ae = ab / (1/r1 + 1)
+        var ae = ab / (1 / r1 + 1)
         contentX = ae - root.width / 2
 
         var CD = contentHeight
@@ -289,12 +311,13 @@ Flickable {
         var FD = CD - CF
         var AB = CD * /*Properties.mis.paperRatio*/ r / canvasWrap.scale
         var R1 = CF / FD
-        var AE = AB / (1/R1 + 1)
+        var AE = AB / (1 / R1 + 1)
         contentY = AE - root.height / 2
     }
 
-    function zoom2ActualSize () {
+    function zoom2ActualSize() {
         if (zoom !== 0) {
+
             /*console.log(Properties.mis.paperRatio, canvas.scale)
             var a = 1 / canvasWrap.scale
             console.log(a)
@@ -305,24 +328,26 @@ Flickable {
             zoom = 0
             Math.min(Math.max(contentX, 0), contentWidth - width)
             Math.min(Math.max(contentY, 0), contentHeight - height)
-//            canvasWrap.scale = r
+            //            canvasWrap.scale = r
         }
     }
 
-    function zoomIn (cx, cy) {
+    function zoomIn(cx, cy) {
         if (zoom !== 1) {
-//            canvasWrap.scale = Properties.mis.zoomFactor
+            //            canvasWrap.scale = Properties.mis.zoomFactor
             zoom = 1
-            contentX = Math.min(Math.max((cx - 16) * Properties.mis.zoomFactor, 0),
+            contentX = Math.min(Math.max((cx - 16) * Properties.mis.zoomFactor,
+                                         0),
                                 contentWidth - width) // - width * 0.25
-            contentY = Math.min(Math.max((cy - 16) * Properties.mis.zoomFactor, 0),
-                                contentHeight - height)// - height * 0.25
-//            zoom = 1
+            contentY = Math.min(Math.max((cy - 16) * Properties.mis.zoomFactor,
+                                         0),
+                                contentHeight - height) // - height * 0.25
+            //            zoom = 1
         }
-//        state = ""
+        //        state = ""
     }
 
-    function zoom2FitWidth () {
+    function zoom2FitWidth() {
         if (zoom !== 2) {
             pointScrollToCenter(root.width / canvas.paperDefine.width)
             zoom = 2
@@ -331,13 +356,23 @@ Flickable {
         }
     }
 
-    function clickedArea (p) {
+    function clickedArea(p) {
         var px = p.x >= 0 ? p.x * canvasWrap.scale - contentX : NaN
         var py = p.y >= 0 ? p.y * canvasWrap.scale - contentY : NaN
-        var l = p.x === -2 || (p.x !== -1 && px < edgesMargin/* * canvasWrap.scale*/)
-        var t = p.y === -2 || (p.y !== -1 && py < edgesMargin/* * canvasWrap.scale*/)
-        var r = p.x === -3 || (p.x !== -1 && px > width - edgesMargin/* * canvasWrap.scale*/)
-        var b = p.y === -3 || (p.y !== -1 && py > height - edgesMargin/* * canvasWrap.scale*/)
+        var l = p.x === -2 || (p.x !== -1
+                               && px < edgesMargin /* * canvasWrap.scale*/
+                               )
+        var t = p.y === -2 || (p.y !== -1
+                               && py < edgesMargin /* * canvasWrap.scale*/
+                               )
+        var r = p.x === -3
+                || (p.x !== -1
+                    && px > width - edgesMargin /* * canvasWrap.scale*/
+                    )
+        var b = p.y === -3
+                || (p.y !== -1
+                    && py > height - edgesMargin /* * canvasWrap.scale*/
+                    )
 
         var d = -1
         if (l && t)
@@ -357,12 +392,17 @@ Flickable {
         else if (l)
             d = 6
 
-        return { d: d, px: px, py: py }
+        return {
+            "d": d,
+            "px": px,
+            "py": py
+        }
     }
 
-    function scrollRight (ca) {
+    function scrollRight(ca) {
         if (ca.d === 2) {
-            var r = contentX + width * hScrollRatio/*ca.px - edgesMargin*//* * canvasWrap.scale*/
+            var r = contentX + width * hScrollRatio /*ca.px - edgesMargin*/
+            /* * canvasWrap.scale*/
             if (r + width < contentWidth)
                 naScrollX.to = r
             else
@@ -371,9 +411,10 @@ Flickable {
             naScrollX.restart()
         }
     }
-    function scrollLeft (ca) {
+    function scrollLeft(ca) {
         if (ca.d === 6) {
-            var l = contentX - width * hScrollRatio/*(width - ca.px) + edgesMargin*//* * canvasWrap.scale*/
+            var l = contentX - width * hScrollRatio /*(width - ca.px) + edgesMargin*/
+            /* * canvasWrap.scale*/
             if (l > 0)
                 naScrollX.to = l
             else
@@ -382,7 +423,7 @@ Flickable {
             naScrollX.restart()
         }
     }
-    function scrollDown (ca) {
+    function scrollDown(ca) {
         if (ca.d === 4) {
             var b = contentY + canvas.paperDefine.lineHeight * canvasWrap.scale
             if (b + height < contentHeight)
@@ -392,7 +433,7 @@ Flickable {
             naScrollY.restart()
         }
     }
-    function scrollUp (ca) {
+    function scrollUp(ca) {
         if (ca.d === 0) {
             var u = contentY - canvas.paperDefine.lineHeight * canvasWrap.scale
             if (u > 0)
@@ -404,7 +445,7 @@ Flickable {
         }
     }
 
-    function scroll2LeftSide () {
+    function scroll2LeftSide() {
         var l = paperDefine.paperPadding[2] * canvasWrap.scale
         if (l + width < contentWidth)
             naScrollX.to = l
@@ -413,7 +454,7 @@ Flickable {
         naScrollX.restart()
     }
 
-    function scroll2RightSide () {
+    function scroll2RightSide() {
         var r = contentWidth - width - paperDefine.paperPadding[3] * canvasWrap.scale
         if (r > 0)
             naScrollX.to = r
@@ -422,7 +463,7 @@ Flickable {
         naScrollX.restart()
     }
 
-    function scroll2TopSide () {
+    function scroll2TopSide() {
         var t = paperDefine.paperPadding[0] * canvasWrap.scale
         if (t + height < contentHeight)
             naScrollY.to = t
@@ -431,7 +472,7 @@ Flickable {
         naScrollY.restart()
     }
 
-    function scroll2BottomSide () {
+    function scroll2BottomSide() {
         var b = contentHeight - height - paperDefine.paperPadding[1] * canvasWrap.scale
         if (b > 0)
             naScrollY.to = b
@@ -440,30 +481,31 @@ Flickable {
         naScrollY.restart()
     }
 
-    function newLine () {
+    function newLine() {
         scroll2LeftSide()
         scrollDown(clickedArea({
-                                       x: -1,
-                                       y: -3
-                                   }))
+                                   "x": -1,
+                                   "y": -3
+                               }))
     }
 
-    function topLeftCorner (ca) {
+    function topLeftCorner(ca) {
         if (ca.d === 7)
             topLeftClicked()
     }
-    function topRightCorner (ca) {
+    function topRightCorner(ca) {
         if (ca.d === 1)
             topRightClicked()
     }
-    function bottomRightCorner (ca) {
+    function bottomRightCorner(ca) {
         if (ca.d === 3)
             bottomRightClicked()
     }
-    function bottomLeftCorner (ca) {
+    function bottomLeftCorner(ca) {
         if (ca.d === 5)
             bottomLeftClicked()
     }
+
 
     /*function scrollLeftDown (force) {
         var rx = point1.x * canvasWrap.scale - contentX
@@ -481,7 +523,6 @@ Flickable {
             autoScrollDown(true)
         }
     }*/
-
     Component.onCompleted: {
         canvas.parent = canvasWrap
     }

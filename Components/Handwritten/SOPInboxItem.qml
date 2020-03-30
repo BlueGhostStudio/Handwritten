@@ -7,7 +7,8 @@ import QtGraphicalEffects 1.13
 MouseArea {
     id: root
     property string from
-    property bool realtime
+//    property bool realtime
+    property alias realtime: canvas.realtime
     property alias sopid: canvas.hwID
     property var datetime
 
@@ -45,17 +46,21 @@ MouseArea {
         GridView.view.itemClicked(ObjectModel.index, this)
     }
 
+    /*Connections {
+        target: SOP
+        onHasEndedSlipOfPaper: {
+            console.log(hwSopid, sopid)
+            if (hwSopid === sopid)
+                realtime = fase
+        }
+    }*/
     Connections {
         target: HWR
         onRemoteSignal: {
             if (obj !== "Handwritten")
                 return
 
-            if (sig === "endSlipOfPaper" && args[0] === sopid)
-                realtime = false
-            else if (sig === "stroke" && args[0] === canvas.hwType && args[1] === sopid) {
-
-                console.log("onRemoteSignal", obj, sig)
+            if (sig === "stroke" && args[0] === canvas.hwType && args[1] === sopid) {
                 var s = args[2]
                 if (s.pos.x < -canvas.x)
                     canvas.x = -s.pos.x + 5

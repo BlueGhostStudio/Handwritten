@@ -12,11 +12,15 @@ StrokeDefine 1.0 StrokeDefine.qml
 StrokeDefine 1.1 StrokeDefine11.qml
 HWSettings 1.1 Settings11.qml
 
+singleton SOP 1.0 SlipOfPaperInterface.qml
 SlipOfPaperCanvas 1.0 SlipOfPaperCanvas.qml
 SlipOfPaper 1.0 SlipOfPaper.qml
 SOPModel 1.0 SOPModel.qml
 SOPListView 1.0 SOPListView.qml
 
-ManuscriptBookshelfView 1.0 ManuscriptBookshelfView.qml
-ManuscriptModel 1.0 ManuscriptModel.qml
-ManuscriptCanvas 1.0 ManuscriptCanvas.qml
+singleton MSCR 1.0 ManuscriptInterface.qml
+ManuscriptCanvas 1.1 ManuscriptCanvas11.qml
+
+# ManuscriptBookshelfView 1.0 ManuscriptBookshelfView.qml
+# ManuscriptModel 1.0 ManuscriptModel.qml
+# ManuscriptCanvas 1.0 ManuscriptCanvas.qml

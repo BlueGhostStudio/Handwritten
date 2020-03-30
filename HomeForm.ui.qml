@@ -3,8 +3,9 @@ import QtQuick.Controls 2.13
 import QtQuick.Controls.Material 2.13
 import "qrc:/SlipOfPaper"
 import "qrc:/Letter"
-import "qrc:/Manuscript"
+//import "qrc:/Manuscript"
 import "qrc:/Components/Ui" as UI
+import Handwritten 1.1
 
 UI.TopLevelPage {
     property alias swipeView: swipeView
@@ -65,8 +66,16 @@ UI.TopLevelPage {
             id: letterlInbox
         }
 
-        ManuscriptBookShelf {
+        Item {
             id: manuscriptBookShelf
+            HWPaint {
+                anchors.fill: parent
+                writeMode: true
+                canvas: ManuscriptCanvas{
+                    anchors.fill: parent
+                }
+                hwID: 0
+            }
         }
     }
 

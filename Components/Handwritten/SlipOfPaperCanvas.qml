@@ -3,6 +3,8 @@ import QtQuick 2.13
 HWCanvas {
 //    id: canvas
     hwType: 0
+    hwInterface: SOP
+    property bool realtime: false
 
     function loadData(sopid, slice) {
         console.log("loadData", sopid, slice)
@@ -17,21 +19,36 @@ HWCanvas {
         if (!slice)
             hwID = sopid
 
-        return HWR.getSlipOfPaperTemp(sopid, slice).then(function (ret) {
+        return SOP.getSlipOfPaperTemp(sopid, slice).then(function (ret) {
+            realtime = ret.realtime
+            console.log("is realtime?", realtime)
             if (canvas.available)
-                _drawStrokes_(ret)
+                _drawStrokes_(ret.data)
             else
                 canvas.availableChanged.connect(function () {
                     console.log("ok----")
-                    _drawStrokes_(ret)
+                    _drawStrokes_(ret.data)
                 })
         })
+    }
 
+    Connections {
+        target: SOP
+        onHasEndedSlipOfPaper: {
+            if (hwSopid === hwID)
+                realtime = false
+        }
     }
 
     function load(sopid/*, realtime*/, slice) {
-        return initial(sopid).then(function () {
+        /*return initial(sopid).then(function () {
             return loadData(sopid, slice)
-        })
+        })*/
+        return SOP.getPaperDefine(sopid).then(
+                    (ret)=>{
+                        console.log(ret)
+                        initialPaper(ret ? ret.paper : false)
+                        return loadData(sopid, slice)
+                    })
     }
 }

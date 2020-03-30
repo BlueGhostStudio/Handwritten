@@ -123,14 +123,23 @@ ColumnLayout {
         onRemoteSignal: {
             if (obj !== "Handwritten")
                 return
-            if (args[0] === sopid) {
+            if (sig === "stroke" && args[0] === sopid)
+                aniWritting.restart()
+            /*if (args[0] === sopid) {
                 if (sig === "stroke")
                     aniWritting.restart()
                 else if (sig === "endSlipOfPaper") {
                     indicator.visible = false
                     realtime = false
                 }
-            }
+            }*/
+        }
+    }
+    Connections {
+        target: SOP
+        onHasEndedSlipOfPaper: {
+            indicator.visible = false
+            realtime = false
         }
     }
     

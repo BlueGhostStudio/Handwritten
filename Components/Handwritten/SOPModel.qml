@@ -17,7 +17,7 @@ ObjectModel {
     }
 
     function loadInbox() {
-        HWR.slipOfPaperInbox().then(function (ret) {
+        SOP.slipOfPaperInbox().then(function (ret) {
             for (var x in ret) {
                 addInboxItem(ret[x].id, ret[x].from,
                              ret[x].datetime, ret[x].realtime)
@@ -30,7 +30,8 @@ ObjectModel {
         onNewSlipOfPaper: addInboxItem(sopid, from, datetime, true)
     }*/
     Component.onCompleted: {
-        HWR.newSlipOfPaper.connect(function (sopid, from, datetime) {
+        SOP.newSlipOfPaper.connect(function (sopid, from, datetime) {
+            console.log(sopid, from, datetime)
             addInboxItem(sopid, from, datetime, true)
         })
     }

@@ -35,16 +35,10 @@
         <file>Components/Ui/NumberField.qml</file>
         <file>SettingsPage.qml</file>
         <file>Letter/LetterlInbox.ui.qml</file>
-        <file>Manuscript/ManuscriptBookShelf.ui.qml</file>
         <file>Components/Ui/ToolButton.qml</file>
         <file>Components/Ui/ItemDelegate.qml</file>
         <file>Components/Ui/RoundButton.qml</file>
         <file>Components/Ui/TopLevelPage.qml</file>
-        <file>Components/Handwritten/ManuscriptCanvas.qml</file>
-        <file>Components/Handwritten/ManuscriptBookshelfView.qml</file>
-        <file>Components/Handwritten/ManuscriptBookshelfItem.qml</file>
-        <file>Components/Handwritten/ManuscriptModel.qml</file>
-        <file>Manuscript/ManuscriptWritingPage.qml</file>
         <file>Components/Ui/StrokeDialog.qml</file>
         <file>Components/Ui/StrokeButton.qml</file>
         <file>Components/Ui/ZoomButton.qml</file>
@@ -55,13 +49,15 @@
         <file>Components/Ui/FloatToolBar.qml</file>
         <file>Components/Ui/MenuItem.qml</file>
         <file>Components/Handwritten/PaperSelector.qml</file>
-        <file>Manuscript/NewManuscriptBookPage.qml</file>
         <file>Components/Ui/Button.qml</file>
         <file>JoinWizard/+android/JoinPage.ui.qml</file>
         <file>JoinWizard/JoinPage.ui.qml</file>
         <file>JoinWizard/PhoneNumberPage.qml</file>
         <file>JoinWizard/VerifyPhone.qml</file>
         <file>JoinWizard/JoinWithUsername.qml</file>
+        <file>Components/Handwritten/SlipOfPaperInterface.qml</file>
+        <file>Components/Handwritten/ManuscriptInterface.qml</file>
+        <file>Components/Handwritten/ManuscriptCanvas11.qml</file>
     </qresource>
     <qresource prefix="/imgs">
         <file alias="brush-black-1.png">Components/Handwritten/imgs/brush-black-1.png</file>

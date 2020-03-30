@@ -8,9 +8,10 @@ BGMRPC {
     id: rpc
     url: "ws://116.196.18.41:8000"
 
-    signal newSlipOfPaper(int sopid, string from, int datetime)
-    signal newManuscriptBook(int bid)
     signal joined(string user)
+    /*signal newSlipOfPaper(int sopid, string from, int datetime)
+    signal newManuscriptBook(int bid)*/
+//    signal strokeUpdated(int sHwType, var sHwID, var sHwStroke)
 //    signal joinFail(var error)
 
     onStatusChanged: {
@@ -24,12 +25,13 @@ BGMRPC {
             return
         }
 
-        if (sig === "newSlipOfPaper") {
+        /*if (sig === "newSlipOfPaper") {
             newSlipOfPaper(args[0], args[1], args[2])
-//            SlipOfPaperData.addInboxItem(args[0], args[1], args[2], true)
         } else if (sig === "manuscriptBookCreated") {
             newManuscriptBook(args[0])
-        }
+        } else if (sig === "stroke") {
+            strokeUpdated(args[0], args[1], args[2])
+        }*/
     }
 
     /*function join(name) {
@@ -74,9 +76,7 @@ BGMRPC {
     }
 
     function requestVerificationCode(phoneNo) {
-        console.log("in requestVerificationCode")
         return asyncCall("Handwritten", "js", "requestVerificationCode", phoneNo);
-//        return asyncCall("Handwritten", "js", "bind", id)
     }
     function registerByPhone(code) {
         return asyncCall("Handwritten", "js", "registerByPhone", code, DeviceInfo.deviceId)
@@ -86,7 +86,7 @@ BGMRPC {
     }
 
     // Slip of Paper
-    function slipOfPaperInbox() {
+    /*function slipOfPaperInbox() {
         return asyncCall("Handwritten", "js", "slipOfPaperInbox")
     }
     function createSlipOfPaper(to, paper) {
@@ -101,8 +101,14 @@ BGMRPC {
     function endSlipOfPaper(sopid) {
         return asyncCall("Handwritten", "js", "end_slipOfPaper", sopid)
     }
-    /*function getSlipOfPaperCache(sopid) {
-        return asyncCall("Handwritten", "js", "getSlipOfPaperCache", sopid)
+    function getSlipOfPaperTemp(sopid, slice) {
+        return asyncCall("Handwritten", "js", "getSlipOfPaperTemp", sopid,
+                         slice).then(function (ret) {
+                             return Promise.resolve(base64ToStrokes(ret.data))
+                         })
+    }
+    function haveReadSlipOfPaper(id) {
+        return asyncCall("Handwritten", "js", "haveRead", id)
     }*/
     function base64ToStrokes(data) {
         var bin = byteArray.atob(data)
@@ -132,19 +138,10 @@ BGMRPC {
         return strokes
     }
 
-    function getSlipOfPaperTemp(sopid, slice) {
-        return asyncCall("Handwritten", "js", "getSlipOfPaperTemp", sopid,
-                         slice).then(function (ret) {
-                             return Promise.resolve(base64ToStrokes(ret.data))
-                         })
-    }
     function getPaperDefine(id, type/*, realtime*/) {
         //        console.log("getPaperDefine", id, type, realtime)
         return asyncCall("Handwritten", "js", "getPaperDefine", id,
                          type/*, realtime*/)
-    }
-    function haveReadSlipOfPaper(id) {
-        return asyncCall("Handwritten", "js", "haveRead", id)
     }
 
     // Manuscript

@@ -60,16 +60,24 @@ UI.SubPage {
     }
 
     function readed(i) {
+        /*console.log(i)
         var item = inboxModel.get(i)
         if(!item.realtime)
-            inboxModel.remove(i)
+            inboxModel.remove(i)*/
+        var item = inboxModel.get(i)
+        SOP.haveReadSlipOfPaper(item.sopid).then(
+                    (success)=>{
+                        console.log(success)
+                        if (success)
+                            inboxModel.remove(i)
+                    })
     }
 
     function load() {
         canvas.load(inboxItem.sopid)
     }
 
-    backBtn.onClicked: HWR.haveReadSlipOfPaper(inboxItem.sopid)
+//    backBtn.onClicked: SOP.haveReadSlipOfPaper(inboxItem.sopid)
 
     Component.onCompleted: load()
 }

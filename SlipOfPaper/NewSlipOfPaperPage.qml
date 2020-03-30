@@ -87,8 +87,11 @@ import "qrc:/Components/Ui" as UI
     }*/
     HWPaint {
         id: paint
-        hwType: 0
         writeMode: true
+        canvas: SlipOfPaperCanvas {
+            anchors.fill: parent
+        }
+
         anchors.centerIn: parent
         width: Math.min(contentWidth, parent.width)
         height: Math.min(contentHeight, parent.height)
@@ -101,7 +104,7 @@ import "qrc:/Components/Ui" as UI
 
     function createSlipOfPaper(to, paperType, hGuide) {
         root.to = to
-        HWR.createSlipOfPaper(to, paperType).then (function (sop) {
+        SOP.createSlipOfPaper(to, paperType).then (function (sop) {
             if (sop.temp && /^\+?\d{7,15}$/.test(to)) {
                 var q = '0' + Qt.btoa(sop.sopid + ',' + sop.toUsrID + ',' + sop.token)
                 console.log(q)
@@ -111,7 +114,12 @@ import "qrc:/Components/Ui" as UI
                 SMS.sendSMS(to, message)
             }
             paint.hwID = sop.sopid
-            return paint.initial()
+//            return paint.initial()
+            return SOP.getPaperDefine(paint.hwID).then(
+                        (ret)=>{
+                            paint.initialPaper(ret ? ret.paper : false)
+                            paint.initialStroke(ret ? ret.stroke : false)
+                        })
         }).then (function (sopid) {
             paint.zoom2ActualSize()
             paint.vguide = !hGuide
@@ -120,7 +128,7 @@ import "qrc:/Components/Ui" as UI
     }
 
     backBtn.onClicked: {
-        HWR.endSlipOfPaper(paint.hwID).then(function () {
+        SOP.endSlipOfPaper(paint.hwID).then(function () {
             rootWindowStackView.pop()
         })
     }

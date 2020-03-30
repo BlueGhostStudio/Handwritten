@@ -22,10 +22,10 @@ QtObject {
             stroke_brush[0].source = Properties.paper.stroke_brush[0]
             stroke_brush[1].source = Properties.paper.stroke_brush[1]
             stroke_brush[2].source = Properties.paper.stroke_brush[2]
-            background_color = "white"
+            background_color = "red"
             background_image = ""
         } else {
-            define = JSON.parse(define.paper)
+            define = JSON.parse(define)
             width = define.width
             height = define.height
             stroke_color = define.stroke_color

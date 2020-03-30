@@ -10,8 +10,8 @@ QtObject {
         SOPInboxItem {
         }
     }
-    property Component manuscriptBookshelfCmp: Component {
+    /*property Component manuscriptBookshelfCmp: Component {
         ManuscriptBookshelfItem {
         }
-    }
+    }*/
 }

@@ -9,6 +9,7 @@ import "HWColor.js" as HWC
     property int hwType: 0
     property bool paperStretch: false
     property alias canvas: canvas
+    property var hwInterface: SOP
 
     /*property string paperType: {
         switch (hwType) {
@@ -170,8 +171,25 @@ import "HWColor.js" as HWC
     }
 
     Connections {
-        target: HWR
-        onRemoteSignal: {
+        target: hwInterface
+        onStrokeUpdated: {
+            if (sHwType !== hwType || sHwID !== hwID)
+                return
+
+            switch (sHwStroke.type) {
+            case 0:
+                ballpointStroke(sHwStroke)
+                break
+            case 1:
+                penStroke(sHwStroke)
+                break
+            case 2:
+                paintStroke(sHwStroke)
+                break
+            }
+        }
+
+        /*onRemoteSignal: {
             if (obj !== "Handwritten" || sig !== "stroke" || args[0] !== hwType || args[1] !== hwID)
                 return
 
@@ -186,12 +204,11 @@ import "HWColor.js" as HWC
                 paintStroke(args[2])
                 break
             }
-        }
+        }*/
     }
 
-    function initial(sopid/*, realtime*/) {
-        return HWR.getPaperDefine(sopid, hwType/*paperType*//*,
-                                  realtime*/).then(function (ret) {
+    /*function initial(sopid) {
+        return HWR.getPaperDefine(sopid, hwType).then(function (ret) {
                                       if (ret === false)
                                           paperDefine.initial(-1)
                                       else
@@ -201,5 +218,11 @@ import "HWColor.js" as HWC
 
                                       return Promise.resolve(ret)
                                   })
+    }*/
+    function initialPaper(pd) {
+        paperDefine.initial(pd ? pd : -1)
+        paperDefineChanged()
+
+        return Promise.resolve()
     }
 }
