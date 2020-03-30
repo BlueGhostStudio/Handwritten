@@ -3,6 +3,7 @@ import QtQuick.Controls 2.13
 import "qrc:/Components/Ui" as UI
 import BGMRPC 1.0
 import Handwritten 1.1
+import QtQuick.Layouts 1.13
 
 UI.InboxPage {
     id: root
@@ -11,20 +12,15 @@ UI.InboxPage {
 
     signal newSlipOfPaper()
 
+    extendedArea: UI.ToolButton {
+        id: tbNewSlipOfPaper
+        icon.source: "qrc:/icons/new.png"
+    }
+
     SOPListView {
         id: sopInbox
         anchors.fill: parent
         bottomMargin: 64
-    }
-
-    RoundButton {
-        id: rbNewSlipOfPaper
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        highlighted: true
-        icon.source: "qrc:/icons/new.png"
-        icon.width: 50 * uiRatio
-        icon.height: 50 * uiRatio
     }
 
     Connections {
@@ -33,21 +29,32 @@ UI.InboxPage {
     }
     Connections {
         target: sopInbox
-        onItemClicked: stackView.push(Qt.createComponent("SlipOfPaperViewPage.qml"), {
+        onItemClicked: rootWindowStackView.push(Qt.createComponent("SlipOfPaperViewPage.qml"), {
                                           "inboxItem": item,
                                           "inboxModel": sopInbox.model
                                       })
     }
 
     Connections {
-        target: rbNewSlipOfPaper
+        target: tbNewSlipOfPaper
         onClicked: {
-            var cmp = Qt.createComponent("NewSlipOfPaperPage.qml")
+//            dlgNewSlipOfPaper.open()
+            var newDlg = Qt.createComponent("NewSlipOfPaperDialog.qml").createObject(rootWindow)
+            newDlg.open();
+            /*var cmp = Qt.createComponent("NewSlipOfPaperPage.qml")
             if (cmp.status === Component.Ready) {
-                stackView.push(cmp)
-            }
+                rootWindowStackView.push(cmp)
+            }*/
         }
     }
+
+    /*Connections {
+        target: dlgNewSlipOfPaper
+        onAccepted: {
+            var page = rootWindowStackView.push("NewSlipOfPaperPage.qml");
+            page.createSlipOfPaper(dlgNewSlipOfPaper.to, dlgNewSlipOfPaper.paperType, dlgNewSlipOfPaper.hGuide)
+        }
+    }*/
 }
 
 

@@ -7,8 +7,8 @@ GridView {
 
     clip: true
 
-    cellWidth: 138
-    cellHeight: 128
+    cellWidth: 202
+    cellHeight: 192
 
     topMargin: 10
     leftMargin: 10

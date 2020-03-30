@@ -76,9 +76,9 @@ ColumnLayout {
         
         SlipOfPaperCanvas {
             id: canvas
-            width: canvasSize.width
+            width: paperDefine.width//canvasSize.width
             y: canvas.range[3] - canvas.range[1] < 0 ? 0 : -range[1] + 5
-            height: canvasSize.height
+            height: paperDefine.height//canvasSize.height
         }
         
         Button {

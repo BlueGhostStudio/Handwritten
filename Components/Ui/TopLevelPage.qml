@@ -2,6 +2,7 @@ import QtQuick 2.13
 import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.13
 import QtQuick.Controls.Material 2.13
+import Handwritten 1.1
 
 Page {
     id: root
@@ -11,7 +12,12 @@ Page {
 
     header: ToolBar {
         id: toolBar
-        height: 48 * uiRatio
+        height: 48 * Properties.mis.paperRatio
+        Material.primary: {
+            var c = Material.background
+            Qt.hsla(c.hslHue, c.hslSaturation, c.hslLightness - 0.05, 1)
+        }
+        Material.elevation: 0
 
         RowLayout {
             id: rlLeftExtend
@@ -24,13 +30,13 @@ Page {
             x: {
                 switch(titleAlign) {
                 case Qt.AlignLeft:
-                    uiRatio * 5
+                    Properties.mis.paperRatio * 5
                     break;
                 case Qt.AlignHCenter:
                     (parent.width - width) / 2
                     break
                 case Qt.AlignRight:
-                    parent.width - width - uiRatio * 5
+                    parent.width - width - Properties.mis.paperRatio * 5
                     break
                 }
             }

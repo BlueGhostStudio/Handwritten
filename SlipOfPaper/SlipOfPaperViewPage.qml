@@ -12,13 +12,19 @@ UI.SubPage {
     property int inboxIndex: inboxItem.ObjectModel.index
 
     title: qsTr("Slip of Paper") + " - " + qsTr("From") + ": " + inboxItem.from
+    /*extendedArea: [
+        UI.ToolButton {
+            text: qsTr("Save to Image")
+            onClicked: canvas.saveToImage()
+        }
+    ]*/
 
     SlipOfPaperCanvas {
         id: canvas
         anchors.centerIn: parent
         width: 266
         height: 266
-        scale: uiRatio
+        scale: Properties.mis.paperRatio
     }
 
     UI.ToolButton {
@@ -62,6 +68,8 @@ UI.SubPage {
     function load() {
         canvas.load(inboxItem.sopid)
     }
+
+    backBtn.onClicked: HWR.haveReadSlipOfPaper(inboxItem.sopid)
 
     Component.onCompleted: load()
 }

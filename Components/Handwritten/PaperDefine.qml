@@ -10,6 +10,8 @@ QtObject {
         Image {},
         Image {}
     ]
+    property var paperPadding: [50, 50, 50, 50] // top, bottom, left, right
+    property var lineHeight: 32
     property var background_color
     property var background_image: ""
 
@@ -20,6 +22,8 @@ QtObject {
             stroke_brush[0].source = Properties.paper.stroke_brush[0]
             stroke_brush[1].source = Properties.paper.stroke_brush[1]
             stroke_brush[2].source = Properties.paper.stroke_brush[2]
+            background_color = "white"
+            background_image = ""
         } else {
             define = JSON.parse(define.paper)
             width = define.width
@@ -30,6 +34,11 @@ QtObject {
             stroke_brush[2].source = define.stroke_brush[2]
             background_color = define.background_color
             background_image = define.background_image
+            if (define.padding) {
+                paperPadding = define.padding
+            }
+            if (define.lineHeight)
+                lineHeight = define.lineHeight
         }
     }
 }

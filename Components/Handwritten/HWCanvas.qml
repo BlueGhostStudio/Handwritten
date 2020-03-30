@@ -1,13 +1,16 @@
-import QtQuick 2.13
+﻿import QtQuick 2.13
+import Qt.labs.platform 1.0
 import "HWColor.js" as HWC
 
-Canvas {
-    id: canvas
-    contextType: "2d"
+/*Canvas*/Item {
+    id: root
     property var hwID
     property var range: [Number.MAX_VALUE, Number.MAX_VALUE, 0, 0]
     property int hwType: 0
-    property string paperType: {
+    property bool paperStretch: false
+    property alias canvas: canvas
+
+    /*property string paperType: {
         switch (hwType) {
         case 0:
             "SlipOfPaper"
@@ -18,10 +21,17 @@ Canvas {
         case 2:
             "Manuscript"
         }
-    }
+    }*/
     property PaperDefine paperDefine: PaperDefine {}
-    canvasSize.width: paperDefine.width
-    canvasSize.height: paperDefine.height
+    Canvas {
+        id: canvas
+        width: canvasSize.width
+        height: canvasSize.height
+        canvasSize.width: Math.max(paperDefine.width, 794)
+        canvasSize.height: Math.max(paperDefine.height, 1123)
+        renderStrategy: Canvas.Threaded
+        contextType: "2d"
+    }
 
     clip: true
 
@@ -38,63 +48,61 @@ Canvas {
     }
     Image {
         id: bgImageLayer
-        fillMode: Image.Tile
+        fillMode: paperStretch ? Image.Stretch : Image.Tile
         anchors.fill: parent
         z: -1
         source: paperDefine.background_image || ""
     }
 
     function clear () {
-        context.clearRect(0, 0, canvasSize.width, canvasSize.height)
-        requestPaint()
+        canvas.context.clearRect(0, 0, canvas.canvasSize.width, canvas.canvasSize.height)
+        canvas.requestPaint()
     }
 
     function resize(stroke) {
         var prePos = stroke.prePos
         var pos = stroke.pos
-        range = [Math.max(Math.min(range[0], prePos.x, pos.x), 0), Math.max(
-                     Math.min(range[1], prePos.y, pos.y),
-                     0), Math.min(Math.max(range[2], prePos.x,
-                                           pos.x), width), Math.min(
-                     Math.max(range[3], prePos.y, pos.y), height)]
+        range = [Math.max(Math.min(range[0], prePos.x, pos.x), 0),
+                 Math.max(Math.min(range[1], prePos.y, pos.y), 0),
+                 Math.min(Math.max(range[2], prePos.x, pos.x), width),
+                 Math.min(Math.max(range[3], prePos.y, pos.y), height)]
     }
 
     function drawStrokes(strokes) {
         for (var x in strokes) {
             switch(strokes[x].type) {
             case 0:
-                canvas.ballpointStroke(strokes[x])
+                root.ballpointStroke(strokes[x])
                 break
             case 1:
-                canvas.penStroke(strokes[x])
+                root.penStroke(strokes[x])
                 break
             case 2:
-                canvas.paintStroke(strokes[x])
+                root.paintStroke(strokes[x])
             }
         }
     }
 
     function ballpointStroke(stroke) {
-        context.strokeStyle = paperDefine.stroke_color[stroke.color]
-        context.lineWidth = stroke.size
-        context.lineCap = "round"
+        canvas.context.strokeStyle = paperDefine.stroke_color[stroke.color]
+        canvas.context.lineWidth = stroke.size
+        canvas.context.lineCap = "round"
 
-        context.beginPath()
-        context.moveTo(stroke.prePos.x, stroke.prePos.y)
-        context.lineTo(stroke.pos.x, stroke.pos.y)
-        context.stroke()
-        requestPaint()
+        canvas.context.beginPath()
+        canvas.context.moveTo(stroke.prePos.x, stroke.prePos.y)
+        canvas.context.lineTo(stroke.pos.x, stroke.pos.y)
+        canvas.context.stroke()
+        canvas.requestPaint()
         resize(stroke)
     }
 
     function penStroke(stroke) {
-//        console.log("penStroke")
         var dx = stroke.pos.x - stroke.prePos.x
         var dy = stroke.pos.y - stroke.prePos.y
         var dist = Math.pow(dx * dx + dy * dy, 0.5)
 
-        context.beginPath()
-        context.fillStyle = paperDefine.stroke_color[stroke.color]
+        canvas.context.beginPath()
+        canvas.context.fillStyle = paperDefine.stroke_color[stroke.color]
         var r1 = Math.atan2(dy, dx)
         var radius = stroke.size / 2
         var preRadius = stroke.preSize / 2
@@ -102,27 +110,26 @@ Canvas {
         var maxRadius = Math.max(radius, preRadius)
         if (dist + minRadius <= maxRadius) {
             if (radius === maxRadius)
-                context.arc(stroke.pos.x, stroke.pos.y, stroke.size / 2, 0,
+                canvas.context.arc(stroke.pos.x, stroke.pos.y, stroke.size / 2, 0,
                             2 * Math.PI)
             else
-                context.arc(stroke.prePos.x, stroke.prePos.y,
+                canvas.context.arc(stroke.prePos.x, stroke.prePos.y,
                             stroke.preSize / 2, 0, 2 * Math.PI)
         } else {
             var sr = Math.acos((maxRadius - minRadius) / dist)
-            context.arc(stroke.prePos.x, stroke.prePos.y, stroke.preSize / 2,
+            canvas.context.arc(stroke.prePos.x, stroke.prePos.y, stroke.preSize / 2,
                         r1 - sr, r1 + sr, true)
-            context.arc(stroke.pos.x, stroke.pos.y, stroke.size / 2,
+            canvas.context.arc(stroke.pos.x, stroke.pos.y, stroke.size / 2,
                         r1 + sr, r1 - sr, true)
-            context.closePath()
+            canvas.context.closePath()
         }
-        context.fill()
+        canvas.context.fill()
 
-        requestPaint()
+        canvas.requestPaint()
         resize(stroke)
     }
 
     function paintStroke(stroke) {
-//        console.log("paintStroke", stroke.shade)
         var strokeSpacing = Math.max(stroke.size / (stroke.shade * 5), 0.01)
 
         var dx = stroke.pos.x - stroke.prePos.x
@@ -143,7 +150,7 @@ Canvas {
             var ws = brushSize * (Math.random() * 0.5 + 0.5)
             var hs = brushSize * (Math.random() * 0.5 + 0.5)
             var rand = Math.floor(Math.random() * 4)
-            context.drawImage(brush, rand * 64, 0, 64, 64,
+            canvas.context.drawImage(brush, rand * 64, 0, 64, 64,
                               _x - brushSize / 2, _y - brushSize / 2,
                               brushSize, brushSize)
             brushSize = brushSize * c
@@ -151,14 +158,20 @@ Canvas {
             _y += _dy
         }
 
-        requestPaint()
+        canvas.requestPaint()
         resize(stroke)
+    }
+
+    function saveToImage() {
+        var url = StandardPaths.writableLocation(StandardPaths.PicturesLocation) + "/Handwritten.png"
+        url = url.replace(/^file:\/\//, '')
+        console.log(url)
+        canvas.save(url)
     }
 
     Connections {
         target: HWR
         onRemoteSignal: {
-            console.log("in onRemoteSignal", sig, args[0], args[1], hwID)
             if (obj !== "Handwritten" || sig !== "stroke" || args[0] !== hwType || args[1] !== hwID)
                 return
 
@@ -177,7 +190,7 @@ Canvas {
     }
 
     function initial(sopid/*, realtime*/) {
-        return HWR.getPaperDefine(sopid, paperType/*,
+        return HWR.getPaperDefine(sopid, hwType/*paperType*//*,
                                   realtime*/).then(function (ret) {
                                       if (ret === false)
                                           paperDefine.initial(-1)

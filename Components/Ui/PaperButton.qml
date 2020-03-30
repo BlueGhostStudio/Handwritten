@@ -14,7 +14,7 @@ UI.RoundButton {
     background: Item {
         Image {
             id: bgImage
-            fillMode: Image.Tile
+            fillMode: Image.PreserveAspectCrop
             anchors.fill: parent
             source: paperDefine.background_image || ""
             visible: paperDefine.background_image !== undefined

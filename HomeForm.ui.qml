@@ -18,7 +18,7 @@ UI.TopLevelPage {
             font.pixelSize: rootWindow.font.pixelSize * 0.75
         }*/
         UI.ToolButton {
-            text: rootWindow.loginUser
+            text: rootWindow.loginUserNick
             onClicked: openMainMenu()
         }
 

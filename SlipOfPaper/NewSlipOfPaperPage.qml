@@ -7,128 +7,28 @@ import "qrc:/Components/Ui" as UI
 
 /*Page*/UI.SubPage {
     id: root
-    property alias to: tfTo.text
+    property string to
 
     title: qsTr("Slip of Paper") + " - " + qsTr("To") + ": " + to
 
     extendedArea: [
-        UI.PaperButton {
-            icon.source: {
-                switch (paint.strokeType) {
-                case 0:
-                    "qrc:/icons/ballPointPen.png"
-                    break
-                case 1:
-                    "qrc:/icons/pen.png"
-                    break
-                case 2:
-                    "qrc:/icons/paint.png"
-                }
-            }
-            paperDefine: paint.paperDefine
-            icon.color: paperDefine.stroke_color[paint.color]
-            bgColorRect.border.color: icon.color
-            bgColorRect.border.width: paint.strokeSize === 0 ? 1 : 3
-            visible: stackLayout.currentIndex === 1
-
-            onClicked: dlgStroke.open()
+        UI.ZoomButton {
+            paint: paint
         },
-        UI.ToolButton {
-            icon.source: paint.zoom === uiRatio ? "qrc:/icons/zoomIn.png" : "qrc:/icons/zoom_1.png"
-            visible: stackLayout.currentIndex === 1
-            highlighted: paint.state === "zooming"
-            onClicked: {
-                if (paint.zoom === uiRatio)
-                    paint.state = "zooming"
-                else
-                    paint.zoomOut(uiRatio)
-            }
-        },
+        UI.StrokeButton {
+            id: btnStroke
+            paint: paint
+        }/*,
         UI.ToolButton {
             icon.source: "qrc:/icons/settings.png"
             onClicked: {
                 openSettingsPage()
             }
-        }
+        }*/
 
     ]
-    
-    Dialog {
-        id: dlgStroke
-        anchors.centerIn: overlay
 
-        modal: true
-        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-        ButtonGroup {
-            id: bgColor
-            exclusive: true
-        }
-        ButtonGroup {
-            id: bgPen
-            exclusive: true
-        }
-        ButtonGroup {
-            id: bgPenSize
-            exclusive: true
-        }
-        ColumnLayout {
-            RowLayout {
-                UI.ColorButton {
-                    paperDefine: paint.paperDefine
-                    ButtonGroup.group: bgColor
-                    checked: true
-                    value: 0
-                }
-                UI.ColorButton {
-                    paperDefine: paint.paperDefine
-                    ButtonGroup.group: bgColor
-                    value: 1
-                }
-                UI.ColorButton {
-                    paperDefine: paint.paperDefine
-                    ButtonGroup.group: bgColor
-                    value: 2
-                }
-            }
-
-            RowLayout {
-                UI.PenButton {
-                    ButtonGroup.group: bgPen
-                    icon.source: "qrc:/icons/ballPointPen.png"
-                    value: 0
-                    checked: true
-                }
-
-                UI.PenButton {
-                    ButtonGroup.group: bgPen
-                    icon.source: "qrc:/icons/pen.png"
-                    value: 1
-                }
-
-                UI.PenButton {
-                    ButtonGroup.group: bgPen
-                    icon.source: "qrc:/icons/paint.png"
-                    value: 2
-                }
-            }
-
-            RowLayout {
-                UI.PenButton {
-                    ButtonGroup.group: bgPenSize
-                    icon.source: "qrc:/icons/thin.png"
-                    value: 0
-                    checked: true
-                }
-                UI.PenButton {
-                    ButtonGroup.group: bgPenSize
-                    icon.source: "qrc:/icons/thick.png"
-                    value: 1
-                }
-            }
-        }
-    }
-
-    SwipeView {
+    /*SwipeView {
         id: stackLayout
         anchors.fill: parent
         interactive: false
@@ -170,7 +70,7 @@ import "qrc:/Components/Ui" as UI
                             paint.hwID = sopid
                             return paint.initial()
                         }).then(function () {
-                            paint.zoomOut(uiRatio)
+                            paint.zoomOut()
                             stackLayout.currentIndex = 1
                             backBtn.icon.source = "qrc:/icons/send.png"
                         })
@@ -184,21 +84,44 @@ import "qrc:/Components/Ui" as UI
                 height: parent.height
             }
         }
+    }*/
+    HWPaint {
+        id: paint
+        hwType: 0
+        writeMode: true
+        anchors.centerIn: parent
+        width: Math.min(contentWidth, parent.width)
+        height: Math.min(contentHeight, parent.height)
+//            strokeType: btnStroke.strokeType//bgPen.checkedButton.value
+//            strokeSize: btnStroke.strokeSize//bgPenSize.checkedButton.value
+//            color: btnStroke.color//bgColor.checkedButton.value
+//        vguide: !cbHGuide.checked
+    }
 
-        HWPaint {
-            id: paint
-            hwType: 0
-            strokeType: bgPen.checkedButton.value
-            strokeSize: bgPenSize.checkedButton.value
-            color: bgColor.checkedButton.value
-            vguide: !cbHGuide.checked
-        }
+
+    function createSlipOfPaper(to, paperType, hGuide) {
+        root.to = to
+        HWR.createSlipOfPaper(to, paperType).then (function (sop) {
+            if (sop.temp && /^\+?\d{7,15}$/.test(to)) {
+                var q = '0' + Qt.btoa(sop.sopid + ',' + sop.toUsrID + ',' + sop.token)
+                console.log(q)
+                var message = Properties.user.nick +"给你传了一张纸条,点击链接查看..."
+                SMS.sendSMS(to, message)
+                message = "...http://116.196.18.41/Handwritten/?q=" + q
+                SMS.sendSMS(to, message)
+            }
+            paint.hwID = sop.sopid
+            return paint.initial()
+        }).then (function (sopid) {
+            paint.zoom2ActualSize()
+            paint.vguide = !hGuide
+            backBtn.icon.source = "qrc:/icons/send.png"
+        })
     }
 
     backBtn.onClicked: {
-        if (stackLayout.currentIndex === 1)
-            HWR.endSlipOfPaper(paint.hwID).then(function () {
-                stackView.pop()
-            })
+        HWR.endSlipOfPaper(paint.hwID).then(function () {
+            rootWindowStackView.pop()
+        })
     }
 }

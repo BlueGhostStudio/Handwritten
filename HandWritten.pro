@@ -1,5 +1,26 @@
 QT += quick
 
+android: {
+    QT += androidextras
+    SOURCES += phonedeviceinfo.cpp \
+               sendsms.cpp
+    HEADERS += phonedeviceinfo.h \
+               sendsms.h
+    DISTFILES += \
+        android/AndroidManifest.xml \
+        android/build.gradle \
+        android/gradle/wrapper/gradle-wrapper.jar \
+        android/gradle/wrapper/gradle-wrapper.properties \
+        android/gradlew \
+        android/gradlew.bat \
+        android/res/values/libs.xml
+}
+else: !android {
+    QT += network
+    HEADERS += desktopdeviceinfo.h
+    SOURCES += desktopdeviceinfo.cpp
+}
+
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -36,14 +57,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     bytearray.h
 
-DISTFILES += \
-    android/AndroidManifest.xml \
-    android/build.gradle \
-    android/gradle/wrapper/gradle-wrapper.jar \
-    android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew \
-    android/gradlew.bat \
-    android/res/values/libs.xml
 
 contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
     ANDROID_PACKAGE_SOURCE_DIR = \

@@ -9,7 +9,9 @@ BGMRPC {
     url: "ws://116.196.18.41:8000"
 
     signal newSlipOfPaper(int sopid, string from, int datetime)
-    signal joined()
+    signal newManuscriptBook(int bid)
+    signal joined(string user)
+//    signal joinFail(var error)
 
     onStatusChanged: {
         if (status === WebSocket.Open) {
@@ -25,13 +27,62 @@ BGMRPC {
         if (sig === "newSlipOfPaper") {
             newSlipOfPaper(args[0], args[1], args[2])
 //            SlipOfPaperData.addInboxItem(args[0], args[1], args[2], true)
+        } else if (sig === "manuscriptBookCreated") {
+            newManuscriptBook(args[0])
         }
     }
 
-    function join(name) {
-        asyncCall("Handwritten", "js", "join", name).then(function (ret) {
-            joined()
+    /*function join(name) {
+        return asyncCall("Handwritten", "js", "join", name, DeviceInfo.deviceId).then(function (ret) {
+            if (ret.ok) {
+                joined(ret.user)
+                return Promise.resolve()
+            } else {
+                joinFail(ret)
+                return Promise.reject()
+            }
         })
+    }*/
+    function join(/*by, */name, pwd) {
+        // by === 0, join by phone
+        // by === 1, join by user and pwd
+        if (Qt.platform.os === 'android' || Qt.platform.os === 'ios')
+            return asyncCall("Handwritten", "js", "joinWithPhone", name, DeviceInfo.deviceId).then(function (ret) {
+                if (ret.ok) {
+                    joined(name)
+                    Properties.user.user = name
+                    Properties.user.nick = ret.name
+                    return Promise.resolve()
+                } else {
+//                    console.log(ret.ok, ret.errno, ret.errstr)
+                    //                joinFail(ret)
+                    return Promise.reject(ret.errno)
+                }
+            })
+        else {
+            return asyncCall("Handwritten", "js", "joinWithUsername", name, pwd).then(function (ret) {
+                if (ret.ok) {
+                    joined(name)
+                    Properties.user.user = name
+                    Properties.user.nick = ret.name
+                    return Promise.resolve()
+                } else
+                    return Promise.reject(ret.errno)
+//                    console.log(ret.ok, ret.errno)
+            })
+        }
+    }
+
+    function requestVerificationCode(phoneNo) {
+        console.log("in requestVerificationCode")
+        return asyncCall("Handwritten", "js", "requestVerificationCode", phoneNo);
+//        return asyncCall("Handwritten", "js", "bind", id)
+    }
+    function registerByPhone(code) {
+        return asyncCall("Handwritten", "js", "registerByPhone", code, DeviceInfo.deviceId)
+    }
+    function registerByUsername(usr, pwd) {
+        return asyncCall("Handwritten", "js", "registerByUsername", usr, pwd)
     }
 
     // Slip of Paper
@@ -53,44 +104,91 @@ BGMRPC {
     /*function getSlipOfPaperCache(sopid) {
         return asyncCall("Handwritten", "js", "getSlipOfPaperCache", sopid)
     }*/
+    function base64ToStrokes(data) {
+        var bin = byteArray.atob(data)
+
+        var strokes = []
+
+        for (var i = 0; i < bin.length; i += 13) {
+            //                                 var sizeByte = bin[i + 1] << 8 | bin[i + 2]
+            strokes.push({
+                             "type": bin[i] >> 6,
+                             "color": bin[i] >> 4 & 0x03,
+                             "shade": bin[i] & 0xf,
+                             "preSize": (bin[i + 1] << 8 | bin[i + 2]) / 100,
+                             "size": (bin[i + 3] << 8 | bin[i + 4]) / 100,
+                             "prePos": {
+                                 "x": (bin[i + 5] << 8 | bin[i + 6]) / 10,
+                                 "y": (bin[i + 7] << 8 | bin[i + 8]) / 10
+                             },
+                             "pos": {
+                                 "x": (bin[i + 9] << 8 | bin[i + 10]) / 10,
+                                 "y": (bin[i + 11] << 8 | bin[i + 12]) / 10
+                             },
+                             "realtime": false
+                         })
+        }
+
+        return strokes
+    }
+
     function getSlipOfPaperTemp(sopid, slice) {
         return asyncCall("Handwritten", "js", "getSlipOfPaperTemp", sopid,
                          slice).then(function (ret) {
-                             var bin = byteArray.atob(ret.data)
-
-                             var strokes = []
-
-                             for (var i = 0; i < bin.length; i += 13) {
-                                 //                                 var sizeByte = bin[i + 1] << 8 | bin[i + 2]
-                                 strokes.push({
-                                                  "type": bin[i] >> 6,
-                                                  "color": bin[i] >> 4 & 0x03,
-                                                  "shade": bin[i] & 0xf,
-                                                  "preSize": (bin[i + 1] << 8 | bin[i + 2]) / 100,
-                                                  "size": (bin[i + 3] << 8 | bin[i + 4]) / 100,
-                                                  "prePos": {
-                                                      "x": (bin[i + 5] << 8 | bin[i + 6]) / 10,
-                                                      "y": (bin[i + 7] << 8 | bin[i + 8]) / 10
-                                                  },
-                                                  "pos": {
-                                                      "x": (bin[i + 9] << 8 | bin[i + 10]) / 10,
-                                                      "y": (bin[i + 11] << 8 | bin[i + 12]) / 10
-                                                  },
-                                                  "realtime": false
-                                              })
-                             }
-
-                             return Promise.resolve(strokes)
+                             return Promise.resolve(base64ToStrokes(ret.data))
                          })
     }
-    function getPaperDefine(id, type, realtime) {
+    function getPaperDefine(id, type/*, realtime*/) {
         //        console.log("getPaperDefine", id, type, realtime)
         return asyncCall("Handwritten", "js", "getPaperDefine", id,
-                         type, realtime)
+                         type/*, realtime*/)
+    }
+    function haveReadSlipOfPaper(id) {
+        return asyncCall("Handwritten", "js", "haveRead", id)
     }
 
     // Manuscript
-    function write_manuscript(mid, stroke) {
-        return asyncCall("Handwritten", "js", "write_manuscript", mid, stroke)
+    function manuscriptBookshelf() {
+        return asyncCall("Handwritten", "js", "manuscriptBookshelf")
+    }
+
+    function createManuscriptBook(notebook) {
+        return asyncCall("Handwritten", "js", "createManuscriptBook", notebook)
+    }
+    function createManuscriptPage(book, page) {
+        return asyncCall("Handwritten", "js", "createManuscriptPage", book, page)
+    }
+
+    function write_manuscript(msid, stroke) {
+        remoteSignal("Handwritten", "stroke", [2, msid, stroke])
+        return asyncCall("Handwritten", "js", "write_manuscript", msid, stroke)
+    }
+
+    function manuscriptPage(msid) {
+        return asyncCall("Handwritten", "js", "manuscriptPage", msid).then(function (ret) {
+            return Promise.resolve(ret !== false ? ret.buffer : -1)
+        })
+    }
+
+    function readManuscriptData(msbid, startPos, len) {
+        return asyncCall("Handwritten", "js", "readBuffer", msbid, startPos, len).then(function (ret) {
+            return Promise.resolve(ret.pos === -2 ? {
+                                                        pos: -1,
+                                                        data: []
+                                                    } : {
+                                       pos: ret.pos,
+                                       data: base64ToStrokes(ret.data)
+                                   })
+        })
+    }
+
+    function closeManuscriptBook(bid) {
+        return asyncCall("Handwritten", "js", "closeManuscript", bid)
+    }
+
+    function clearManuscriptPage(msid) {
+        return asyncCall("Handwritten", "js", "clearPage", msid).then(function () {
+            remoteSignal("localManuscriptWrite", "clear", [msid])
+        });
     }
 }

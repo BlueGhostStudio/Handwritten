@@ -23,7 +23,6 @@
         <file>Components/Handwritten/SOPInboxItem.qml</file>
         <file>SlipOfPaper/NewSlipOfPaperPage.qml</file>
         <file>SlipOfPaper/SlipOfPaperInbox.ui.qml</file>
-        <file>SlipOfPaper/PaperSelector.qml</file>
         <file>SlipOfPaper/SlipOfPaperViewPage.qml</file>
         <file>Components/Ui/PaperButton.qml</file>
         <file>Components/Ui/ColorButton.qml</file>
@@ -40,9 +39,29 @@
         <file>Components/Ui/ToolButton.qml</file>
         <file>Components/Ui/ItemDelegate.qml</file>
         <file>Components/Ui/RoundButton.qml</file>
-        <file>LoginPage.ui.qml</file>
         <file>Components/Ui/TopLevelPage.qml</file>
         <file>Components/Handwritten/ManuscriptCanvas.qml</file>
+        <file>Components/Handwritten/ManuscriptBookshelfView.qml</file>
+        <file>Components/Handwritten/ManuscriptBookshelfItem.qml</file>
+        <file>Components/Handwritten/ManuscriptModel.qml</file>
+        <file>Manuscript/ManuscriptWritingPage.qml</file>
+        <file>Components/Ui/StrokeDialog.qml</file>
+        <file>Components/Ui/StrokeButton.qml</file>
+        <file>Components/Ui/ZoomButton.qml</file>
+        <file>SlipOfPaper/NewSlipOfPaperDialog.qml</file>
+        <file>Components/Ui/ZoomFitWidthButton.qml</file>
+        <file>Components/Ui/StrokeForm.qml</file>
+        <file>Components/Ui/PageSelector1.qml</file>
+        <file>Components/Ui/FloatToolBar.qml</file>
+        <file>Components/Ui/MenuItem.qml</file>
+        <file>Components/Handwritten/PaperSelector.qml</file>
+        <file>Manuscript/NewManuscriptBookPage.qml</file>
+        <file>Components/Ui/Button.qml</file>
+        <file>JoinWizard/+android/JoinPage.ui.qml</file>
+        <file>JoinWizard/JoinPage.ui.qml</file>
+        <file>JoinWizard/PhoneNumberPage.qml</file>
+        <file>JoinWizard/VerifyPhone.qml</file>
+        <file>JoinWizard/JoinWithUsername.qml</file>
     </qresource>
     <qresource prefix="/imgs">
         <file alias="brush-black-1.png">Components/Handwritten/imgs/brush-black-1.png</file>
@@ -52,6 +71,12 @@
         <file alias="brush-red-1.png">Components/Handwritten/imgs/brush-red-1.png</file>
         <file alias="brush-red.png">Components/Handwritten/imgs/brush-red.png</file>
         <file alias="paper.png">Components/Handwritten/imgs/paper.png</file>
+        <file alias="coverA4.png">Components/Handwritten/imgs/coverA4.png</file>
+        <file alias="notebookA4.png">Components/Handwritten/imgs/notebookA4.png</file>
+        <file alias="notebookA6.png">Components/Handwritten/imgs/notebookA6.png</file>
+        <file alias="coverA6.png">Components/Handwritten/imgs/coverA6.png</file>
+        <file alias="notebookA5.png">Components/Handwritten/imgs/notebookA5.png</file>
+        <file alias="coverA5.png">Components/Handwritten/imgs/coverA5.png</file>
     </qresource>
     <qresource prefix="/icons">
         <file alias="back.png">Components/Handwritten/icons/back.png</file>
@@ -70,5 +95,16 @@
         <file alias="goNext.png">Components/Handwritten/icons/goNext.png</file>
         <file alias="goBack.png">Components/Handwritten/icons/goBack.png</file>
         <file alias="HWIcon.png">Components/Handwritten/icons/HWIcon.png</file>
+        <file alias="return.png">Components/Handwritten/icons/return.png</file>
+        <file alias="vmenu.png">Components/Handwritten/icons/vmenu.png</file>
+        <file alias="zoomFitWidth.png">Components/Handwritten/icons/zoomFitWidth.png</file>
+        <file alias="broom.png">Components/Handwritten/icons/broom.png</file>
+        <file alias="eye.png">Components/Handwritten/icons/eye.png</file>
+        <file alias="write.png">Components/Handwritten/icons/write.png</file>
+        <file alias="minus.png">Components/Handwritten/icons/minus.png</file>
+        <file alias="plus.png">Components/Handwritten/icons/plus.png</file>
+        <file alias="openPage.png">Components/Handwritten/icons/openPage.png</file>
+        <file alias="expend.png">Components/Handwritten/icons/expend.png</file>
+        <file alias="collapse.png">Components/Handwritten/icons/collapse.png</file>
     </qresource>
 </RCC>

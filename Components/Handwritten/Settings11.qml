@@ -1,5 +1,6 @@
 import QtQuick 2.13
 import QtQuick.Controls 2.13
+import QtQuick.Controls.Material 2.13
 import QtQuick.Layouts 1.13
 import Handwritten 1.1
 
@@ -189,19 +190,66 @@ ColumnLayout {
             text: qsTr("Maximum")
             ButtonGroup.group: bgPressure
         }
-        MultiPointTouchArea {
-            id: mptaPressure
+        Rectangle {
             Layout.columnSpan: 2
             Layout.fillWidth: true
             implicitHeight: 128
-            touchPoints: [ TouchPoint { id: point1 } ]
-            onTouchUpdated: {
-                if (rbMinP.checked) {
-                    nfPressureMin.text = Math.round(point1.pressure * 1000) / 1000
-                } else {
-                    nfPressureMax.text = Math.max(Number(nfPressureMin.text), Math.round(point1.pressure * 1000) / 1000)
+            color: Material.background
+            border.color: Material.accent
+            MultiPointTouchArea {
+                id: mptaPressure
+                anchors.fill: parent
+                touchPoints: [ TouchPoint { id: point1 } ]
+                onTouchUpdated: {
+                    if (rbMinP.checked) {
+                        nfPressureMin.text = Math.round(point1.pressure * 1000) / 1000
+                    } else {
+                        nfPressureMax.text = Math.max(Number(nfPressureMin.text), Math.round(point1.pressure * 1000) / 1000)
+                    }
                 }
             }
+        }
+    }
+
+    Label {
+        Layout.topMargin: font.pixelSize
+        text: qsTr("Edge")
+        font.bold: true
+    }
+    Label {
+        text: qsTr("Tap the page edge while writing to trigger an action")
+    }
+    GridLayout {
+        columns: 2
+        Label {
+            text: qsTr("Trigger margin")
+        }
+        UI.NumberField {
+            id: nfEdgeMargin
+            Layout.fillWidth: true
+            text: Properties.edges.margin
+        }
+        CheckBox {
+            id: cbEdgeScale
+            Layout.columnSpan: 2
+            text: qsTr("Margin scale with zoom")
+            checked: Properties.edges.scaleWithZoom
+        }
+    }
+
+    Label {
+        Layout.topMargin: font.pixelSize
+        text: qsTr("Scroll")
+        font.bold: true
+    }
+    GridLayout {
+        columns: 2
+        Label {
+            text: qsTr("Horizontal Scroll/Visible Area")
+        }
+        UI.NumberField {
+            id: nfSrHorizontalRatio
+            text: Properties.scroll.horizontalRatio
         }
     }
 
@@ -211,18 +259,18 @@ ColumnLayout {
         font.bold: true
     }
     GridLayout {
-        columns: 3
+        columns: 2
         Label {
             text: qsTr("Zoom Factor")
         }
         UI.NumberField {
             id: nfZoom
-            Layout.columnSpan: 2
+//            Layout.columnSpan: 2
             Layout.fillWidth: true
             text: Properties.mis.zoomFactor
         }
         Rectangle {
-            Layout.columnSpan: 3
+            Layout.columnSpan: 2
             implicitHeight: childrenRect.height + 10
             implicitWidth: 378 * Number(nfPaperRatio.text)
             color: "#666666"
@@ -238,9 +286,22 @@ ColumnLayout {
         }
         UI.NumberField {
             id: nfPaperRatio
-            Layout.columnSpan: 2
+//            Layout.columnSpan: 2
             Layout.fillWidth: true
             text: Properties.mis.paperRatio
+        }
+        Label {
+            text: qsTr("Read Strokes Per time while load data")
+        }
+        UI.NumberField {
+            id: nfReadStrokesPerTime
+            text: Properties.mis.readStrokesPerTime
+        }
+        CheckBox {
+            id:cbEnableHighDpiScaling
+            Layout.columnSpan: 2
+            text: qsTr("Enable HighDpi Scaling")
+            checked: Properties.mis.enableHighDpiScaling
         }
     }
 
@@ -252,5 +313,10 @@ ColumnLayout {
         Properties.writting.pressure = [Number(nfPressureMin.text), Number(nfPressureMax.text)]
         Properties.mis.zoomFactor = Number(nfZoom.text)
         Properties.mis.paperRatio = Number(nfPaperRatio.text)
+        Properties.mis.readStrokesPerTime = Number(nfReadStrokesPerTime.text)
+        Properties.edges.margin = Number(nfEdgeMargin.text)
+        Properties.edges.scaleWithZoom = cbEdgeScale.checked
+        Properties.scroll.horizontalRatio = Number(nfSrHorizontalRatio.text)
+        Properties.mis.enableHighDpiScaling = cbEnableHighDpiScaling.checked
     }
 }

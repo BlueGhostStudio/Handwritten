@@ -1,5 +1,6 @@
 import QtQuick 2.13
 import QtQuick.Controls 2.13
+import QtQuick.Controls.Material 2.13
 import QtQuick.Layouts 1.13
 import "qrc:/Components/Ui" as UI
 
@@ -10,12 +11,13 @@ Page {
 
     header: ToolBar {
         height: 48 * uiRatio
+        Material.elevation: 0
         UI.ToolButton {
             id: tbBack
             icon.source: "qrc:/icons/back.png"
             anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
-            onClicked: stackView.pop ()
+            onClicked: rootWindowStackView.pop ()
         }
         Label {
             anchors.centerIn: parent

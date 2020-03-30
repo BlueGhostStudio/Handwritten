@@ -1,32 +1,37 @@
 import QtQuick 2.13
 
 HWCanvas {
-    id: canvas
+//    id: canvas
     hwType: 0
 
-    function load(sopid/*, realtime*/, slice) {
-        function _load_(sopid, slice) {
-            clear()
-            if (slice === undefined)
-                slice = false
-
-            if (!slice)
-                hwID = sopid
-
-            HWR.getSlipOfPaperTemp(sopid, slice).then(function (ret) {
-                drawStrokes(ret)
-//                return Promise.resolve(ret)
-            })
+    function loadData(sopid, slice) {
+        console.log("loadData", sopid, slice)
+        function _drawStrokes_(ret) {
+            clear ()
+            drawStrokes(ret)
         }
 
-        initial(sopid).then(function () {
-            if (available) {
-                _load_(sopid, slice)
-            } else {
-                availableChanged.connect(function () {
-                    _load_(sopid, slice)
+        if (slice === undefined)
+            slice = false
+
+        if (!slice)
+            hwID = sopid
+
+        return HWR.getSlipOfPaperTemp(sopid, slice).then(function (ret) {
+            if (canvas.available)
+                _drawStrokes_(ret)
+            else
+                canvas.availableChanged.connect(function () {
+                    console.log("ok----")
+                    _drawStrokes_(ret)
                 })
-            }
+        })
+
+    }
+
+    function load(sopid/*, realtime*/, slice) {
+        return initial(sopid).then(function () {
+            return loadData(sopid, slice)
         })
     }
 }

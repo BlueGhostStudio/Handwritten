@@ -29,9 +29,27 @@ QtObject {
         category: "writting"
         property var pressure: [0.2, 0.4]
     }
+    property Settings edges: Settings {
+        category: "edges"
+        property int margin: 32
+        property bool scaleWithZoom: true
+    }
+    property Settings scroll: Settings {
+        category: "scroll"
+        property real horizontalRatio: 0.6
+    }
+
     property Settings mis: Settings {
         category: "mis"
         property int zoomFactor: 15
         property real paperRatio: 1
+        property int readStrokesPerTime: 1024
+        property bool enableHighDpiScaling: true
+    }
+
+    property Settings user: Settings {
+        category: "user"
+        property string user: ""
+        property string nick: ""
     }
 }
