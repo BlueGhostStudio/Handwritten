@@ -11,6 +11,8 @@ public:
     explicit ByteArray(QObject *parent = nullptr);
 
     Q_INVOKABLE QJSValue atob(const QByteArray& input) const;
+    Q_INVOKABLE QByteArray btoa(const QByteArray& input) const;
+
 
 signals:
 

@@ -58,6 +58,7 @@
         <file>Components/Handwritten/SlipOfPaperInterface.qml</file>
         <file>Components/Handwritten/ManuscriptInterface.qml</file>
         <file>Components/Handwritten/ManuscriptCanvas11.qml</file>
+        <file>Components/Handwritten/StrokeData.js</file>
     </qresource>
     <qresource prefix="/imgs">
         <file alias="brush-black-1.png">Components/Handwritten/imgs/brush-black-1.png</file>

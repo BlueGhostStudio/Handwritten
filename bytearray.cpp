@@ -19,3 +19,8 @@ QJSValue ByteArray::atob(const QByteArray &input) const
 
     return array;
 }
+
+QByteArray ByteArray::btoa(const QByteArray& input) const
+{
+    return input.toBase64();
+}
