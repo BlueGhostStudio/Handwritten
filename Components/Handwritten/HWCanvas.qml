@@ -11,6 +11,8 @@ import "HWColor.js" as HWC
     property alias canvas: canvas
     property var hwInterface: SOP
 
+    objectName: "HWCanvas"
+
     /*property string paperType: {
         switch (hwType) {
         case 0:
@@ -166,7 +168,6 @@ import "HWColor.js" as HWC
     function saveToImage() {
         var url = StandardPaths.writableLocation(StandardPaths.PicturesLocation) + "/Handwritten.png"
         url = url.replace(/^file:\/\//, '')
-        console.log(url)
         canvas.save(url)
     }
 
@@ -188,37 +189,7 @@ import "HWColor.js" as HWC
                 break
             }
         }
-
-        /*onRemoteSignal: {
-            if (obj !== "Handwritten" || sig !== "stroke" || args[0] !== hwType || args[1] !== hwID)
-                return
-
-            switch (args[2].type) {
-            case 0:
-                ballpointStroke(args[2])
-                break
-            case 1:
-                penStroke(args[2])
-                break
-            case 2:
-                paintStroke(args[2])
-                break
-            }
-        }*/
     }
-
-    /*function initial(sopid) {
-        return HWR.getPaperDefine(sopid, hwType).then(function (ret) {
-                                      if (ret === false)
-                                          paperDefine.initial(-1)
-                                      else
-                                          paperDefine.initial(ret)
-
-                                      paperDefineChanged()
-
-                                      return Promise.resolve(ret)
-                                  })
-    }*/
     function initialPaper(pd) {
         paperDefine.initial(pd ? pd : -1)
         paperDefineChanged()

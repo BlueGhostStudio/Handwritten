@@ -5,9 +5,9 @@ HWCanvas {
     hwType: 0
     hwInterface: SOP
     property bool realtime: false
+    objectName: "SlipOfPaperCanvas"
 
     function loadData(sopid, slice) {
-        console.log("loadData", sopid, slice)
         function _drawStrokes_(ret) {
             clear ()
             drawStrokes(ret)
@@ -21,12 +21,10 @@ HWCanvas {
 
         return SOP.getSlipOfPaperTemp(sopid, slice).then(function (ret) {
             realtime = ret.realtime
-            console.log("is realtime?", realtime)
             if (canvas.available)
                 _drawStrokes_(ret.data)
             else
                 canvas.availableChanged.connect(function () {
-                    console.log("ok----")
                     _drawStrokes_(ret.data)
                 })
         })
@@ -46,7 +44,6 @@ HWCanvas {
         })*/
         return SOP.getPaperDefine(sopid).then(
                     (ret)=>{
-                        console.log(ret)
                         initialPaper(ret ? ret.paper : false)
                         return loadData(sopid, slice)
                     })

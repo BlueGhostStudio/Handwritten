@@ -65,13 +65,11 @@ ApplicationWindow {
         /*var page = rootWindowStackView.push("qrc:/JoinWizard/JoinPage.ui.qml")
         page.enabled = false*/
         HWR.statusChanged.connect (function () {
-            console.log(Properties.user.user)
             if (Properties.user.user) {
                 if (Qt.platform.os === 'android' || Qt.platform.os === 'ios') {
                     HWR.join(/*0, */Properties.user.user).catch(
                                 (errno) => {
                                     let page = rootWindowStackView.push("qrc:/JoinWizard/JoinPage.ui.qml")
-                                    console.log("errno", errno)
                                     if (errno === -1)
                                         page.joinAction = 1
                                     else if (errno === -2)

@@ -90,6 +90,7 @@ import "qrc:/Components/Ui" as UI
         writeMode: true
         canvas: SlipOfPaperCanvas {
             anchors.fill: parent
+//            hwID: paint.hwID
         }
 
         anchors.centerIn: parent
@@ -107,7 +108,6 @@ import "qrc:/Components/Ui" as UI
         SOP.createSlipOfPaper(to, paperType).then (function (sop) {
             if (sop.temp && /^\+?\d{7,15}$/.test(to)) {
                 var q = '0' + Qt.btoa(sop.sopid + ',' + sop.toUsrID + ',' + sop.token)
-                console.log(q)
                 var message = Properties.user.nick +"给你传了一张纸条,点击链接查看..."
                 SMS.sendSMS(to, message)
                 message = "...http://116.196.18.41/Handwritten/?q=" + q
@@ -117,7 +117,8 @@ import "qrc:/Components/Ui" as UI
 //            return paint.initial()
             return SOP.getPaperDefine(paint.hwID).then(
                         (ret)=>{
-                            paint.initialPaper(ret ? ret.paper : false)
+//                            paint.initialPaper(ret ? ret.paper : false)
+                            paint.canvas.initialPaper(ret ? ret.paper : false)
                             paint.initialStroke(ret ? ret.stroke : false)
                         })
         }).then (function (sopid) {

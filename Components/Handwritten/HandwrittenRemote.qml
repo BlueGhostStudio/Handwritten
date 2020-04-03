@@ -56,8 +56,6 @@ BGMRPC {
                     Properties.user.nick = ret.name
                     return Promise.resolve()
                 } else {
-//                    console.log(ret.ok, ret.errno, ret.errstr)
-                    //                joinFail(ret)
                     return Promise.reject(ret.errno)
                 }
             })
@@ -70,7 +68,6 @@ BGMRPC {
                     return Promise.resolve()
                 } else
                     return Promise.reject(ret.errno)
-//                    console.log(ret.ok, ret.errno)
             })
         }
     }
@@ -138,14 +135,39 @@ BGMRPC {
         return strokes
     }
 
+    function rawDataToStrokes(bin) {
+        var strokes = []
+
+        for (var i = 0; i < bin.length; i += 13) {
+            //                                 var sizeByte = bin[i + 1] << 8 | bin[i + 2]
+            strokes.push({
+                             "type": bin.charCodeAt(i) >> 6,
+                             "color": bin.charCodeAt(i) >> 4 & 0x03,
+                             "shade": bin.charCodeAt(i) & 0xf,
+                             "preSize": (bin.charCodeAt(i + 1) << 8 | bin.charCodeAt(i + 2)) / 100,
+                             "size": (bin.charCodeAt(i + 3) << 8 | bin.charCodeAt(i + 4)) / 100,
+                             "prePos": {
+                                 "x": (bin.charCodeAt(i + 5) << 8 | bin.charCodeAt(i + 6)) / 10,
+                                 "y": (bin.charCodeAt(i + 7) << 8 | bin.charCodeAt(i + 8)) / 10
+                             },
+                             "pos": {
+                                 "x": (bin.charCodeAt(i + 9) << 8 | bin.charCodeAt(i + 10)) / 10,
+                                 "y": (bin.charCodeAt(i + 11) << 8 | bin.charCodeAt(i + 12)) / 10
+                             },
+                             "realtime": false
+                         })
+        }
+
+        return strokes
+    }
+
     function getPaperDefine(id, type/*, realtime*/) {
-        //        console.log("getPaperDefine", id, type, realtime)
         return asyncCall("Handwritten", "js", "getPaperDefine", id,
                          type/*, realtime*/)
     }
 
     // Manuscript
-    function manuscriptBookshelf() {
+    /*function manuscriptBookshelf() {
         return asyncCall("Handwritten", "js", "manuscriptBookshelf")
     }
 
@@ -187,5 +209,5 @@ BGMRPC {
         return asyncCall("Handwritten", "js", "clearPage", msid).then(function () {
             remoteSignal("localManuscriptWrite", "clear", [msid])
         });
-    }
+    }*/
 }

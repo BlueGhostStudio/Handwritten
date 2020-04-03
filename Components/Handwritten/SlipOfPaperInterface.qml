@@ -64,7 +64,6 @@ QtObject {
         return HWR.asyncCall("Handwritten", "js", "haveRead", id)
     }
     function getPaperDefine(id) {
-        console.log("->if sopif", id)
         return HWR.getPaperDefine(id, 0)
     }
 }

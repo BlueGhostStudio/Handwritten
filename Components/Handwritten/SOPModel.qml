@@ -31,7 +31,6 @@ ObjectModel {
     }*/
     Component.onCompleted: {
         SOP.newSlipOfPaper.connect(function (sopid, from, datetime) {
-            console.log(sopid, from, datetime)
             addInboxItem(sopid, from, datetime, true)
         })
     }

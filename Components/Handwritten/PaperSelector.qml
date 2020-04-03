@@ -38,7 +38,7 @@ ListView {
         }
         MouseArea {
             anchors.fill: parent
-            onClicked: parent.ListView.view.currentIndex = index//console.log (index)
+            onClicked: parent.ListView.view.currentIndex = index
         }
         z: 0
     }

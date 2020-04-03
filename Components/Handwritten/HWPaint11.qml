@@ -5,13 +5,13 @@ import "HWColor.js" as HWC
 
 Flickable {
     id: root
-    property HWCanvas canvas: HWCanvas {
+    property HWCanvas canvas/*: HWCanvas {
         anchors.fill: parent
         //        hwType: 0//root.hwType
         hwID: root.hwID
         //        paperDefine: root.paperDefine
         z: -1
-    }
+    }*/
     property real testDist: 0
 
     property var hwInterface: canvas.hwInterface
@@ -238,7 +238,6 @@ Flickable {
                 maxSize = Number(maxSize)
                 var minPressure = Properties.writting.pressure[0]
                 var maxPressure = Properties.writting.pressure[1]
-                //                console.log("--->", minSize, maxSize, minPressure, maxPressure)
                 if (point1.pressure >= 0) {
                     var a = maxPressure - minPressure
                     var b = Math.min(Math.max(point1.pressure, minPressure),
@@ -248,14 +247,10 @@ Flickable {
                     return Math.round((minSize + b / a * c) * 100) / 100
                     //                    return point1.pressure * 20//0.2 / 4 = point1.pressure / x
                 } else {
-                    //console.log(dist)
-                    //                    testDist = Math.max(testDist, dist || 0)
-                    //                    console.log(testDist)
                     var md = 3.34 /*11.84*/
                     /*33.4*/
                     var d = dist || md
                     var p = 1 - Math.min(d, md) / md
-                    //                    console.log ((maxSize - minSize) * p)
                     var s = (maxSize - minSize) * p + minSize
                     if (!preSize)
                         return s
@@ -265,8 +260,6 @@ Flickable {
                         return Math.max(s, preSize * 0.5)
                     }
 
-                    //                    console.log (s)
-                    //                    return Math.round(s * 100) / 100
                 }
             }
         }
@@ -294,7 +287,7 @@ Flickable {
         return Promise.resolve()
     }
     function initialPaper(pd) {
-        canvas.initial(pd)
+        return canvas.initialPaper(pd)
     }
 
     function pointScrollToCenter(r) {
@@ -318,11 +311,6 @@ Flickable {
     function zoom2ActualSize() {
         if (zoom !== 0) {
 
-            /*console.log(Properties.mis.paperRatio, canvas.scale)
-            var a = 1 / canvasWrap.scale
-            console.log(a)
-            contentX *= a
-            contentY *= a*/
             var r = Properties.mis.paperRatio
             pointScrollToCenter(r)
             zoom = 0
@@ -507,23 +495,8 @@ Flickable {
     }
 
 
-    /*function scrollLeftDown (force) {
-        var rx = point1.x * canvasWrap.scale - contentX
-        var by = point1.y * canvasWrap.scale - contentY
-        if ((rx < 32 * canvasWrap.scale
-             && by > height - autoScrollBottomMargin * canvasWrap.scale)
-                || force) {
-            console.log("scroll to bottom and to left")
-            var l = (paperDefine.paperPadding[2] - 10) * canvasWrap.scale
-            if (l + root.width < contentWidth)
-                naAutoScrollX.to = l
-            else
-                naAutoScrollX.to = 0
-            naAutoScrollX.restart()
-            autoScrollDown(true)
-        }
-    }*/
     Component.onCompleted: {
         canvas.parent = canvasWrap
+        canvas.hwID = Qt.binding(()=>{ return hwID })
     }
 }

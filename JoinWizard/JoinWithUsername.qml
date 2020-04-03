@@ -59,7 +59,6 @@ ColumnLayout {
             if (joinAction === 0) {
                 HWR.join(tfUser.text, tfPassword.text).then(
                             ()=>{
-                                console.log("joined finished")
                                 rootWindowStackView.pop()
                             }).catch(
                             (errno)=>{

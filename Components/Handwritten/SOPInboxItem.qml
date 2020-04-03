@@ -46,14 +46,6 @@ MouseArea {
         GridView.view.itemClicked(ObjectModel.index, this)
     }
 
-    /*Connections {
-        target: SOP
-        onHasEndedSlipOfPaper: {
-            console.log(hwSopid, sopid)
-            if (hwSopid === sopid)
-                realtime = fase
-        }
-    }*/
     Connections {
         target: HWR
         onRemoteSignal: {
@@ -77,7 +69,6 @@ MouseArea {
 
     Component.onCompleted: {
         canvas.load(sopid, true).then (function () {
-//            console.log (canvas.range[0], canvas.range[1])
             if (canvas.range[0] < canvas.paperDefine.width) {
                 canvas.x = -canvas.range[0] + 5
                 canvas.y = -canvas.range[1] + 5

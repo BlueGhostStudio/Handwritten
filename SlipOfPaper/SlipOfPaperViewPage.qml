@@ -60,14 +60,9 @@ UI.SubPage {
     }
 
     function readed(i) {
-        /*console.log(i)
-        var item = inboxModel.get(i)
-        if(!item.realtime)
-            inboxModel.remove(i)*/
         var item = inboxModel.get(i)
         SOP.haveReadSlipOfPaper(item.sopid).then(
                     (success)=>{
-                        console.log(success)
                         if (success)
                             inboxModel.remove(i)
                     })

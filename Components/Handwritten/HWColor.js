@@ -5,6 +5,5 @@ function textColor(c, op) {
 }
 
 function opacity(c, op) {
-    //console.log(c, c.r, c.g, c.b)
     return Qt.rgba(c.r, c.g, c.b, op)
 }
