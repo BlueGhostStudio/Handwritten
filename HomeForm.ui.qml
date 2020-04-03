@@ -69,12 +69,42 @@ UI.TopLevelPage {
         Item {
             id: manuscriptBookShelf
             HWPaint {
+                id: paint
                 anchors.fill: parent
                 writeMode: true
+                strokeSize: 0
+                strokeType: 0
+                color: 0
                 canvas: ManuscriptCanvas{
                     anchors.fill: parent
+                    z:-1
                 }
-                hwID: 0
+                hwID: "1p0"
+            }
+        }
+    }
+
+    /*Connections {
+        target: paint
+        Component.onCompleted: {
+            var paperDefine = MSCR.getPaperDefine(paint.hwID);
+            if (paperDefine) {
+                console.log(paperDefine.paper, paperDefine.stroke)
+                paint.initialPaper(paperDefine.paper)
+                paint.initialStroke(paperDefine.stroke)
+            }
+        }
+    }*/
+    Connections {
+        target: HWR
+        onJoined: {
+            var paperDefine = MSCR.getPaperDefine(paint.hwID);
+            if (paperDefine) {
+                console.log(paperDefine.paper, paperDefine.stroke)
+                paint.initialPaper(paperDefine.paper)
+                paint.initialStroke(paperDefine.stroke)
+                paint.canvas.load(paint.hwID)
+//                console.log(JSON.stringify(HWR.rawDataToStrokes(MSCR.manuscriptPage(paint.hwID).data)))
             }
         }
     }

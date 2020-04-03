@@ -4,9 +4,30 @@ HWCanvas {
     hwType: 2
     hwInterface: MSCR
 
-    Component.onCompleted: {
-        paperDefine.initial(-1)
-        paperDefineChanged()
-        console.log(paperDefine.width, paperDefine.height)
+    function loadData(msid) {
+        function _drawStrokes_(ret) {
+            clear ()
+            drawStrokes(ret)
+        }
+
+        hwID = msid
+
+        var page = MSCR.manuscriptPage(msid)
+        if (page) {
+            var data = HWR.rawDataToStrokes(page.data)
+            if (canvas.available)
+                _drawStrokes_(data)
+            else
+                canvas.availableChanged.connect(
+                            ()=>{
+                                _drawStrokes_(data)
+                            })
+        } else {
+            console.log("has not page")
+        }
+    }
+
+    function load(msid) {
+        loadData(msid)
     }
 }
