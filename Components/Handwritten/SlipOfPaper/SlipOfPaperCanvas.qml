@@ -1,4 +1,5 @@
 import QtQuick 2.13
+import ".."
 
 HWCanvas {
 //    id: canvas

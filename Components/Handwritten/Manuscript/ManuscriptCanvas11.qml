@@ -1,4 +1,6 @@
 import QtQuick 2.13
+import ".."
+import "../StrokeData.js" as StrokeData
 
 HWCanvas {
     hwType: 2
@@ -14,7 +16,7 @@ HWCanvas {
 
         var page = MSCR.manuscriptPage(msid)
         if (page) {
-            var data = HWR.rawDataToStrokes(page.data)
+            var data = StrokeData.rawDataToStrokes(page.data)
             if (canvas.available)
                 _drawStrokes_(data)
             else
@@ -22,8 +24,6 @@ HWCanvas {
                             ()=>{
                                 _drawStrokes_(data)
                             })
-        } else {
-            console.log("has not page")
         }
     }
 

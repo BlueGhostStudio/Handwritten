@@ -24,7 +24,6 @@ function toStrokesRawData(data) {
 }
 
 function base64ToStrokes(data) {
-    console.log("in base64ToStrokes")
     var bin = byteArray.atob(data)
 
     var strokes = []

@@ -1,7 +1,8 @@
 pragma Singleton
 
 import QtQuick 2.13
-import "StrokeData.js" as StrokeData
+import "../StrokeData.js" as StrokeData
+import ".."
 
 QtObject {
     signal newSlipOfPaper(int hwSopid, string from, int datetime)
@@ -55,7 +56,6 @@ QtObject {
         return HWR.asyncCall("Handwritten", "js", "getSlipOfPaperTemp", sopid,
                          slice).then(
                     (ret)=>{
-                        console.log(ret.data.length, StrokeData.base64ToStrokes(ret.data))
                         return Promise.resolve({
                                                    data: StrokeData.base64ToStrokes(ret.data),
                                                    realtime: ret.realtime

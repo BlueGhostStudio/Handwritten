@@ -1,6 +1,7 @@
 import QtQuick 2.13
 import QtQml.Models 2.13
 import Handwritten 1.1
+import ".."
 
 ObjectModel {
 //    property Item fakeRoot: Item {}

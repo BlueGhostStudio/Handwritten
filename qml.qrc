@@ -12,15 +12,10 @@
         <file>Components/Handwritten/Properties.qml</file>
         <file>Components/Handwritten/qmldir</file>
         <file>Components/Handwritten/StrokeDefine.qml</file>
-        <file>Components/Handwritten/SOPModel.qml</file>
-        <file>Components/Handwritten/SlipOfPaperCanvas.qml</file>
-        <file>Components/Handwritten/SOPListView.qml</file>
         <file>Components/Handwritten/HWListItemCmp.qml</file>
-        <file>Components/Handwritten/SlipOfPaper.qml</file>
         <file>HomeForm.ui.qml</file>
         <file>Components/Ui/InboxPage.qml</file>
         <file>HandWritten_zh_CN.qm</file>
-        <file>Components/Handwritten/SOPInboxItem.qml</file>
         <file>SlipOfPaper/NewSlipOfPaperPage.qml</file>
         <file>SlipOfPaper/SlipOfPaperInbox.ui.qml</file>
         <file>SlipOfPaper/SlipOfPaperViewPage.qml</file>
@@ -55,10 +50,15 @@
         <file>JoinWizard/PhoneNumberPage.qml</file>
         <file>JoinWizard/VerifyPhone.qml</file>
         <file>JoinWizard/JoinWithUsername.qml</file>
-        <file>Components/Handwritten/SlipOfPaperInterface.qml</file>
-        <file>Components/Handwritten/ManuscriptInterface.qml</file>
-        <file>Components/Handwritten/ManuscriptCanvas11.qml</file>
         <file>Components/Handwritten/StrokeData.js</file>
+        <file>Components/Handwritten/SlipOfPaper/SlipOfPaper.qml</file>
+        <file>Components/Handwritten/SlipOfPaper/SlipOfPaperCanvas.qml</file>
+        <file>Components/Handwritten/SlipOfPaper/SlipOfPaperInterface.qml</file>
+        <file>Components/Handwritten/SlipOfPaper/SOPInboxItem.qml</file>
+        <file>Components/Handwritten/SlipOfPaper/SOPListView.qml</file>
+        <file>Components/Handwritten/SlipOfPaper/SOPModel.qml</file>
+        <file>Components/Handwritten/Manuscript/ManuscriptCanvas11.qml</file>
+        <file>Components/Handwritten/Manuscript/ManuscriptInterface.qml</file>
     </qresource>
     <qresource prefix="/imgs">
         <file alias="brush-black-1.png">Components/Handwritten/imgs/brush-black-1.png</file>

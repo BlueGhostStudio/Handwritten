@@ -3,7 +3,8 @@ pragma Singleton
 import QtQuick 2.13
 import QtWebSockets 1.13
 import QtQuick.LocalStorage 2.13
-import "StrokeData.js" as StrokeData
+import "../StrokeData.js" as StrokeData
+import ".."
 
 QtObject {
     property var manuscriptDB: LocalStorage.openDatabaseSync("manuscriptDB", "1.0", "The manuscript database", 100000000)

@@ -3,6 +3,7 @@ import QtQuick.Controls 2.13
 import QtQml.Models 2.13
 import QtQuick.Controls.Material 2.13
 import QtGraphicalEffects 1.13
+import ".."
 
 MouseArea {
     id: root
