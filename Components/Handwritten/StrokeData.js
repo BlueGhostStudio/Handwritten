@@ -22,6 +22,58 @@ function toStrokesRawData(data) {
 
     return rawData
 }
-function toBase64(data) {
-    return byteArray.btoa(toStrokesRawData(data));
+
+function base64ToStrokes(data) {
+    console.log("in base64ToStrokes")
+    var bin = byteArray.atob(data)
+
+    var strokes = []
+
+    for (var i = 0; i < bin.length; i += 13) {
+        //                                 var sizeByte = bin[i + 1] << 8 | bin[i + 2]
+        strokes.push({
+                         "type": bin[i] >> 6,
+                         "color": bin[i] >> 4 & 0x03,
+                         "shade": bin[i] & 0xf,
+                         "preSize": (bin[i + 1] << 8 | bin[i + 2]) / 100,
+                         "size": (bin[i + 3] << 8 | bin[i + 4]) / 100,
+                         "prePos": {
+                             "x": (bin[i + 5] << 8 | bin[i + 6]) / 10,
+                             "y": (bin[i + 7] << 8 | bin[i + 8]) / 10
+                         },
+                         "pos": {
+                             "x": (bin[i + 9] << 8 | bin[i + 10]) / 10,
+                             "y": (bin[i + 11] << 8 | bin[i + 12]) / 10
+                         },
+                         "realtime": false
+                     })
+    }
+
+    return strokes
+}
+
+function rawDataToStrokes(bin) {
+    var strokes = []
+
+    for (var i = 0; i < bin.length; i += 13) {
+        //                                 var sizeByte = bin[i + 1] << 8 | bin[i + 2]
+        strokes.push({
+                         "type": bin.charCodeAt(i) >> 6,
+                         "color": bin.charCodeAt(i) >> 4 & 0x03,
+                         "shade": bin.charCodeAt(i) & 0xf,
+                         "preSize": (bin.charCodeAt(i + 1) << 8 | bin.charCodeAt(i + 2)) / 100,
+                         "size": (bin.charCodeAt(i + 3) << 8 | bin.charCodeAt(i + 4)) / 100,
+                         "prePos": {
+                             "x": (bin.charCodeAt(i + 5) << 8 | bin.charCodeAt(i + 6)) / 10,
+                             "y": (bin.charCodeAt(i + 7) << 8 | bin.charCodeAt(i + 8)) / 10
+                         },
+                         "pos": {
+                             "x": (bin.charCodeAt(i + 9) << 8 | bin.charCodeAt(i + 10)) / 10,
+                             "y": (bin.charCodeAt(i + 11) << 8 | bin.charCodeAt(i + 12)) / 10
+                         },
+                         "realtime": false
+                     })
+    }
+
+    return strokes
 }

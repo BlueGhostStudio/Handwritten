@@ -1,5 +1,6 @@
 module Handwritten
 singleton HWR 1.0 HandwrittenRemote.qml
+StrokeData 1.0 StrokeData.js
 singleton Properties 1.0 Properties.qml
 singleton Properties 1.1 Properties11.qml
 singleton HWLI 1.0 HWListItemCmp.qml

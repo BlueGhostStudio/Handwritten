@@ -107,7 +107,7 @@ BGMRPC {
     function haveReadSlipOfPaper(id) {
         return asyncCall("Handwritten", "js", "haveRead", id)
     }*/
-    function base64ToStrokes(data) {
+    /*function base64ToStrokes(data) {
         var bin = byteArray.atob(data)
 
         var strokes = []
@@ -159,7 +159,7 @@ BGMRPC {
         }
 
         return strokes
-    }
+    }*/
 
     function getPaperDefine(id, type/*, realtime*/) {
         return asyncCall("Handwritten", "js", "getPaperDefine", id,
