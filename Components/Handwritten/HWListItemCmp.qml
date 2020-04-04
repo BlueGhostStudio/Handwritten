@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.13
 import QtGraphicalEffects 1.13
 import QtQuick.Controls 2.13
 import "SlipOfPaper"
+import "Manuscript"
 
 QtObject {
     property Item fakeRoot: Item {}
@@ -11,8 +12,8 @@ QtObject {
         SOPInboxItem {
         }
     }
-    /*property Component manuscriptBookshelfCmp: Component {
+    property Component manuscriptBookshelfCmp: Component {
         ManuscriptBookshelfItem {
         }
-    }*/
+    }
 }

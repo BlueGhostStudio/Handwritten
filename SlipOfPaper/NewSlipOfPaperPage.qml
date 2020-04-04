@@ -90,7 +90,7 @@ import "qrc:/Components/Ui" as UI
         writeMode: true
         canvas: SlipOfPaperCanvas {
             anchors.fill: parent
-//            hwID: paint.hwID
+            hwID: paint.hwID
         }
 
         anchors.centerIn: parent

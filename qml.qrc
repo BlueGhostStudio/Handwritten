@@ -59,6 +59,12 @@
         <file>Components/Handwritten/SlipOfPaper/SOPModel.qml</file>
         <file>Components/Handwritten/Manuscript/ManuscriptCanvas11.qml</file>
         <file>Components/Handwritten/Manuscript/ManuscriptInterface.qml</file>
+        <file>Components/Handwritten/Manuscript/ManuscriptBookshelfItem.qml</file>
+        <file>Components/Handwritten/Manuscript/ManuscriptModel.qml</file>
+        <file>Components/Handwritten/Manuscript/ManuscriptBookshelfView.qml</file>
+        <file>Manuscript/ManuscriptBookShelf.ui.qml</file>
+        <file>Manuscript/ManuscriptWritingPage.qml</file>
+        <file>Manuscript/NewManuscriptBookPage.qml</file>
     </qresource>
     <qresource prefix="/imgs">
         <file alias="brush-black-1.png">Components/Handwritten/imgs/brush-black-1.png</file>

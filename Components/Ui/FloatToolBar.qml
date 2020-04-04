@@ -10,7 +10,7 @@ Rectangle {
         var c = Material.background
         Qt.rgba(c.r, c.g, c.b, 0.5)
     }
-    radius: width / 2
+    radius: height / 2
     RowLayout {
         id: layout
         spacing: 0

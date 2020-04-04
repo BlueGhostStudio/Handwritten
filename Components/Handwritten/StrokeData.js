@@ -54,6 +54,7 @@ function base64ToStrokes(data) {
 function rawDataToStrokes(bin) {
     var strokes = []
 
+    console.log ("--->", bin.length)
     for (var i = 0; i < bin.length; i += 13) {
         //                                 var sizeByte = bin[i + 1] << 8 | bin[i + 2]
         strokes.push({

@@ -7,7 +7,7 @@ import "qrc:/Components/Ui" as UI
 
 UI.SubPage {
     id: root
-    property var bid
+    property int bid
     property int pid: 0
     property bool controlsShow: true
     title: qsTr("Manuscript")
@@ -27,6 +27,7 @@ UI.SubPage {
 
     HWPaint {
         id: paint
+        hwID: bid + 'p' + pid
         anchors.centerIn: parent
         width: Math.min(contentWidth, parent.width)
         height: Math.min(contentHeight, parent.height)
@@ -34,7 +35,9 @@ UI.SubPage {
         canvas: ManuscriptCanvas {
             anchors.fill: parent
 //            renderTarget: Canvas.FramebufferObject
-            hwID: paint.hwID
+//            hwID: paint.hwID
+            bid: root.bid
+            pid: root.pid
             z: -1
         }
 
@@ -72,9 +75,11 @@ UI.SubPage {
                 icon.source: "qrc:/icons/back.png"
                 text: qsTr("Back")
                 onTriggered: {
-                    HWR.closeManuscriptBook(bid).then(function () {
+                    /*HWR.closeManuscriptBook(bid).then(function () {
                         rootWindowStackView.pop()
-                    })
+                    })*/
+                    MSCR.closeManuscriptBook(bid)
+                    rootWindowStackView.pop()
                 }
             }
             UI.MenuItem {
@@ -99,11 +104,6 @@ UI.SubPage {
             icon.source: "qrc:/icons/vmenu.png"
             onClicked: mToolBar1Menu.popup(this)//toolBar1.visible = false
             onPressAndHold: toolBar1.state = toolBar1.state === "minSize" ? "" : "minSize"
-        }
-
-        ToolSeparator {
-            leftPadding: 0
-            rightPadding: 0
         }
 
         /*UI.ToolButton {
@@ -134,12 +134,22 @@ UI.SubPage {
             paint: paint
             visible: paint.writeMode
         }
+
         Behavior on opacity {
             NumberAnimation { duration: 250 }
         }
         Behavior on y {
             NumberAnimation { duration: 250 }
         }
+    }
+
+    ProgressBar {
+        id: pbLoading
+        anchors.top: toolBar1.bottom
+        anchors.topMargin: 10
+        anchors.horizontalCenter: toolBar1.horizontalCenter
+
+        width: toolBar1.width - toolBar1.height / 2
     }
 
     UI.FloatToolBar {
@@ -162,9 +172,11 @@ UI.SubPage {
         UI.ToolButton {
             icon.source: "qrc:/icons/broom.png"
             onClicked: {
-                HWR.clearManuscriptPage(paint.hwID).then(function () {
+                /*HWR.clearManuscriptPage(paint.hwID).then(function () {
                     paint.canvas.clear ()
-                })
+                })*/
+                MSCR.clearManuscriptPage(paint.hwID)
+                paint.canvas.clear()
             }
         }
     }
@@ -189,14 +201,20 @@ UI.SubPage {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 onPageSelected: {
-                    gotoPage(page)
                     drwPages.close()
+//                    gotoPage(page)
+                    function _gotoPage_ () {
+                        console.log("123")
+                        gotoPage(page)
+                        drwPages.closed.disconnect(_gotoPage_)
+                    }
+                    drwPages.closed.connect(_gotoPage_)
                 }
             }
         }
     }
 
-    Popup {
+    /*Popup {
         id: popLoading
         closePolicy: Popup.NoAutoClose
         anchors.centerIn: Overlay.overlay
@@ -210,39 +228,62 @@ UI.SubPage {
             color: Material.background
             radius: width/2
         }
-    }
+    }*/
 
     function gotoPage(p) {
         if (p < 0 && p > 60)
             return
 
+        MSCR.updateManuscriptData(paint.hwID)
+
         pid = p
-        paint.hwID = bid + "p" + p
         paint.contentX = 0
         paint.contentY = 0
-        paint.initial().then(function () {
-            popLoading.open()
-            paint.canvas.loadData()
-            root.enabled = false
-        })
+
+        paint.canvas.load()
     }
 
-    Connections {
+    function initialNotebook () {
+        paint.initialStroke(paint.canvas.initialNotebookPaper())
+    }
+
+    /*Connections {
         target: paint.canvas
         onDataLoaded: {
             popLoading.close()
             root.enabled = true
         }
-    }
-
-    /*backBtn.onClicked: {
-        HWR.closeManuscriptBook(bid).then(function () {
-            rootWindowStackView.pop()
-        })
     }*/
 
+    backBtn.onClicked: {
+        MSCR.closeManuscriptBook(bid)
+    }
+
+    Connections {
+        target: rootWindow
+        onClosing: MSCR.updateManuscriptData(paint.hwID)
+    }
+
+    Connections {
+        target: paint.canvas
+        onStartLoad: {
+            paint.paintEnabled = false
+            pbLoading.visible = true
+        }
+
+        onLoading: {
+            pbLoading.to = total
+            pbLoading.value = loaded
+        }
+        onFinished: {
+            paint.paintEnabled = true
+            paint.writeMode = false
+            pbLoading.visible = false
+        }
+    }
+
     Component.onCompleted: {
-        gotoPage(pid)
+//        gotoPage(pid)
         /*paint.initial().then(function () {
             paint.canvas.loadData()
         })*/

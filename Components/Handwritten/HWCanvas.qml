@@ -58,7 +58,8 @@ import "HWColor.js" as HWC
     }
 
     function clear () {
-        canvas.context.clearRect(0, 0, canvas.canvasSize.width, canvas.canvasSize.height)
+        var ctx = canvas.getContext("2d")
+        /*canvas.context*/ctx.clearRect(0, 0, canvas.canvasSize.width, canvas.canvasSize.height)
         canvas.requestPaint()
     }
 
@@ -87,14 +88,15 @@ import "HWColor.js" as HWC
     }
 
     function ballpointStroke(stroke) {
-        canvas.context.strokeStyle = paperDefine.stroke_color[stroke.color]
-        canvas.context.lineWidth = stroke.size
-        canvas.context.lineCap = "round"
+        var ctx = canvas.getContext("2d")
+        /*canvas.context*/ctx.strokeStyle = paperDefine.stroke_color[stroke.color]
+        /*canvas.context*/ctx.lineWidth = stroke.size
+        /*canvas.context*/ctx.lineCap = "round"
 
-        canvas.context.beginPath()
-        canvas.context.moveTo(stroke.prePos.x, stroke.prePos.y)
-        canvas.context.lineTo(stroke.pos.x, stroke.pos.y)
-        canvas.context.stroke()
+        /*canvas.context*/ctx.beginPath()
+        /*canvas.context*/ctx.moveTo(stroke.prePos.x, stroke.prePos.y)
+        /*canvas.context*/ctx.lineTo(stroke.pos.x, stroke.pos.y)
+        /*canvas.context*/ctx.stroke()
         canvas.requestPaint()
         resize(stroke)
     }
@@ -104,8 +106,9 @@ import "HWColor.js" as HWC
         var dy = stroke.pos.y - stroke.prePos.y
         var dist = Math.pow(dx * dx + dy * dy, 0.5)
 
-        canvas.context.beginPath()
-        canvas.context.fillStyle = paperDefine.stroke_color[stroke.color]
+        var ctx = canvas.getContext("2d")
+        /*canvas.context*/ctx.beginPath()
+        /*canvas.context*/ctx.fillStyle = paperDefine.stroke_color[stroke.color]
         var r1 = Math.atan2(dy, dx)
         var radius = stroke.size / 2
         var preRadius = stroke.preSize / 2
@@ -113,26 +116,27 @@ import "HWColor.js" as HWC
         var maxRadius = Math.max(radius, preRadius)
         if (dist + minRadius <= maxRadius) {
             if (radius === maxRadius)
-                canvas.context.arc(stroke.pos.x, stroke.pos.y, stroke.size / 2, 0,
+                /*canvas.context*/ctx.arc(stroke.pos.x, stroke.pos.y, stroke.size / 2, 0,
                             2 * Math.PI)
             else
-                canvas.context.arc(stroke.prePos.x, stroke.prePos.y,
+                /*canvas.context*/ctx.arc(stroke.prePos.x, stroke.prePos.y,
                             stroke.preSize / 2, 0, 2 * Math.PI)
         } else {
             var sr = Math.acos((maxRadius - minRadius) / dist)
-            canvas.context.arc(stroke.prePos.x, stroke.prePos.y, stroke.preSize / 2,
+            /*canvas.context*/ctx.arc(stroke.prePos.x, stroke.prePos.y, stroke.preSize / 2,
                         r1 - sr, r1 + sr, true)
-            canvas.context.arc(stroke.pos.x, stroke.pos.y, stroke.size / 2,
+            /*canvas.context*/ctx.arc(stroke.pos.x, stroke.pos.y, stroke.size / 2,
                         r1 + sr, r1 - sr, true)
-            canvas.context.closePath()
+            /*canvas.context*/ctx.closePath()
         }
-        canvas.context.fill()
+        /*canvas.context*/ctx.fill()
 
         canvas.requestPaint()
         resize(stroke)
     }
 
     function paintStroke(stroke) {
+        var ctx = canvas.getContext("2d")
         var strokeSpacing = Math.max(stroke.size / (stroke.shade * 5), 0.01)
 
         var dx = stroke.pos.x - stroke.prePos.x
@@ -153,7 +157,7 @@ import "HWColor.js" as HWC
             var ws = brushSize * (Math.random() * 0.5 + 0.5)
             var hs = brushSize * (Math.random() * 0.5 + 0.5)
             var rand = Math.floor(Math.random() * 4)
-            canvas.context.drawImage(brush, rand * 64, 0, 64, 64,
+            /*canvas.context*/ctx.drawImage(brush, rand * 64, 0, 64, 64,
                               _x - brushSize / 2, _y - brushSize / 2,
                               brushSize, brushSize)
             brushSize = brushSize * c

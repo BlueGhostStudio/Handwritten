@@ -60,6 +60,8 @@ ApplicationWindow {
         }
     }
 
+    onClosing: console.log("quit")
+
     Component.onCompleted: {
         HWR.active = true
         /*var page = rootWindowStackView.push("qrc:/JoinWizard/JoinPage.ui.qml")

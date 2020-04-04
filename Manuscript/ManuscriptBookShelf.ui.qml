@@ -8,10 +8,16 @@ UI.InboxPage {
     title: qsTr("Manuscript")
     subTitle: qsTr("Bookshelf")
 
-    extendedArea: UI.ToolButton {
-        id: tbNewManuscriptBook
-        icon.source: "qrc:/icons/new.png"
-    }
+    extendedArea: [
+        UI.ToolButton {
+            id: tbNewManuscriptBook
+            icon.source: "qrc:/icons/new.png"
+        },
+        UI.ToolButton {
+            text: "test export"
+            onClicked: MSCR.importNotebook()
+        }
+    ]
 
     ManuscriptBookshelfView {
         id: bookSelf
@@ -35,9 +41,13 @@ UI.InboxPage {
 
     Connections {
         target: bookSelf
-        onItemClicked: rootWindowStackView.push("ManuscriptWritingPage.qml", {
+        onItemClicked: {
+            var writtingPage = rootWindowStackView.push("ManuscriptWritingPage.qml", {
                                           bid: item.bid
                                       })
+            writtingPage.initialNotebook()
+            writtingPage.gotoPage(0)
+        }
     }
 
     Connections {

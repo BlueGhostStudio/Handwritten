@@ -12,7 +12,7 @@ QtObject {
     property var paint
 
     function initial(define) {
-        if (define === -1) {
+        if (define === -1 || define) {
             shade = Properties.stroke.shade
 //            len = Properties.stroke.len
 //            ampFactor = Properties.stroke.ampFactor

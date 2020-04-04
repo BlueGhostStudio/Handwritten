@@ -16,6 +16,7 @@ Flickable {
 
     property var hwInterface: canvas.hwInterface
     property bool writeMode: false // 0 view 1 write
+    property bool paintEnabled: true
     property int hwType: canvas.hwType
     property var hwID
     property int strokeType: 0
@@ -148,7 +149,7 @@ Flickable {
                 if (point1.pressed && point2.pressed) {
                     pan()
                 } else if (point1.pressed) {
-                    if (writeMode) {
+                    if (writeMode && paintEnabled) {
                         if (root.state === "") {
                             root.state = "readyToWrite"
                             pre.pos = {
@@ -497,6 +498,6 @@ Flickable {
 
     Component.onCompleted: {
         canvas.parent = canvasWrap
-        canvas.hwID = Qt.binding(()=>{ return hwID })
+//        canvas.hwID = Qt.binding(()=>{ return hwID })
     }
 }

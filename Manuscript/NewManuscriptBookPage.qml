@@ -32,8 +32,9 @@ UI.SubPage {
         text: qsTr("Create")
         icon.source: "qrc:/icons/new.png"
 
-        onClicked: HWR.createManuscriptBook(bookSelector.value).then(function (ret) {
-            console.log(ret)
-        })
+        onClicked: {
+            MSCR.createManuscriptBook(bookSelector.value)
+            rootWindowStackView.pop()
+        }
     }
 }
