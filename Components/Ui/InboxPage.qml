@@ -8,6 +8,7 @@ Page {
     header: Pane {
         RowLayout {
             anchors.fill: parent
+            spacing: 0
             Label {
                 text: title + " - " + subTitle
                 font.pixelSize: rootWindow.font.pixelSize * 1.5
@@ -15,6 +16,7 @@ Page {
             }
             RowLayout {
                 id: rlExtendedArea
+                spacing: 0
             }
         }
     }

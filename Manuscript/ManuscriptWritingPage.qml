@@ -106,15 +106,10 @@ UI.SubPage {
             onPressAndHold: toolBar1.state = toolBar1.state === "minSize" ? "" : "minSize"
         }
 
-        /*UI.ToolButton {
-            visible: toolBar1.state !== "simple"
-            icon.source: "qrc:/icons/back.png"
-            onClicked: {
-                HWR.closeManuscriptBook(bid).then(function () {
-                    rootWindowStackView.pop()
-                })
-            }
-        }*/
+        ToolSeparator {
+            leftPadding: 0
+            rightPadding: 0
+        }
 
         UI.ToolButton {
             visible: toolBar1.state !== "minSize"
@@ -133,6 +128,20 @@ UI.SubPage {
         UI.StrokeButton {
             paint: paint
             visible: paint.writeMode
+        }
+
+        ToolSeparator {
+            leftPadding: 0
+            rightPadding: 0
+        }
+
+        UI.ToolButton {
+            icon.source: "qrc:/icons/upload.png"
+            onClicked: {
+                rootWindowStackView.push("PublishManuscript.qml", {
+                                             bid: bid
+                                         })
+            }
         }
 
         Behavior on opacity {
@@ -202,13 +211,12 @@ UI.SubPage {
                 Layout.fillHeight: true
                 onPageSelected: {
                     drwPages.close()
-//                    gotoPage(page)
-                    function _gotoPage_ () {
-                        console.log("123")
+                    gotoPage(page)
+                    /*function _gotoPage_ () {
                         gotoPage(page)
                         drwPages.closed.disconnect(_gotoPage_)
                     }
-                    drwPages.closed.connect(_gotoPage_)
+                    drwPages.closed.connect(_gotoPage_)*/
                 }
             }
         }

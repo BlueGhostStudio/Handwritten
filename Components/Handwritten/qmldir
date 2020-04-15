@@ -24,4 +24,7 @@ ManuscriptCanvas 1.1 Manuscript/ManuscriptCanvas11.qml
 ManuscriptModel 1.0 Manuscript/ManuscriptModel.qml
 ManuscriptBookshelfView 1.0 Manuscript/ManuscriptBookshelfView.qml
 
+singleton PMSCR 1.0 PublicManuscript/PublicManuscriptInterface.qml
+PublicManuscriptModel 1.0 PublicManuscript/PublicManuscriptModel.qml
+
 # ManuscriptCanvas 1.0 ManuscriptCanvas.qml

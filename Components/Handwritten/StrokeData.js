@@ -52,28 +52,34 @@ function base64ToStrokes(data) {
 }
 
 function rawDataToStrokes(bin) {
-    var strokes = []
+    console.log ("--->", bin)
+    if (bin === null)
+        return []
+    else {
+        var strokes = []
+        for (var i = 0; i < bin.length; i += 13) {
+            //                                 var sizeByte = bin[i + 1] << 8 | bin[i + 2]
+            strokes.push({
+                             "type": bin.charCodeAt(i) >> 6,
+                             "color": bin.charCodeAt(i) >> 4 & 0x03,
+                             "shade": bin.charCodeAt(i) & 0xf,
+                             "preSize": (bin.charCodeAt(i + 1) << 8 | bin.charCodeAt(i + 2)) / 100,
+                             "size": (bin.charCodeAt(i + 3) << 8 | bin.charCodeAt(i + 4)) / 100,
+                             "prePos": {
+                                 "x": (bin.charCodeAt(i + 5) << 8 | bin.charCodeAt(i + 6)) / 10,
+                                 "y": (bin.charCodeAt(i + 7) << 8 | bin.charCodeAt(i + 8)) / 10
+                             },
+                             "pos": {
+                                 "x": (bin.charCodeAt(i + 9) << 8 | bin.charCodeAt(i + 10)) / 10,
+                                 "y": (bin.charCodeAt(i + 11) << 8 | bin.charCodeAt(i + 12)) / 10
+                             },
+                             "realtime": false
+                         })
+        }
 
-    console.log ("--->", bin.length)
-    for (var i = 0; i < bin.length; i += 13) {
-        //                                 var sizeByte = bin[i + 1] << 8 | bin[i + 2]
-        strokes.push({
-                         "type": bin.charCodeAt(i) >> 6,
-                         "color": bin.charCodeAt(i) >> 4 & 0x03,
-                         "shade": bin.charCodeAt(i) & 0xf,
-                         "preSize": (bin.charCodeAt(i + 1) << 8 | bin.charCodeAt(i + 2)) / 100,
-                         "size": (bin.charCodeAt(i + 3) << 8 | bin.charCodeAt(i + 4)) / 100,
-                         "prePos": {
-                             "x": (bin.charCodeAt(i + 5) << 8 | bin.charCodeAt(i + 6)) / 10,
-                             "y": (bin.charCodeAt(i + 7) << 8 | bin.charCodeAt(i + 8)) / 10
-                         },
-                         "pos": {
-                             "x": (bin.charCodeAt(i + 9) << 8 | bin.charCodeAt(i + 10)) / 10,
-                             "y": (bin.charCodeAt(i + 11) << 8 | bin.charCodeAt(i + 12)) / 10
-                         },
-                         "realtime": false
-                     })
+
+        console.log("strokes length", strokes.length)
+
+        return strokes
     }
-
-    return strokes
 }

@@ -22,7 +22,7 @@ QJSValue ByteArray::atob(const QByteArray &input) const
     return array;
 }
 
-QByteArray ByteArray::btoa(const QByteArray& input) const
+QString ByteArray::btoa(const QByteArray& input) const
 {
     return input.toBase64();
 }
@@ -32,7 +32,6 @@ QByteArray ByteArray::strokeDataFragment(const QByteArray& data, int fl) const
     QByteArray array;
     int b = 0;
     int dl = data.length();
-//    qDebug() << "begin:" << b << "data length:" << dl;
     do {
         int toEnd = dl - b;
         int l;
@@ -47,15 +46,12 @@ QByteArray ByteArray::strokeDataFragment(const QByteArray& data, int fl) const
             l = toEnd;
         }
 
-        qDebug() << l << b << dl;
-
         if (l > 0) {
             array.append(data.mid(b, l));
             b += l;
         } else
             break;
     } while (b < dl);
-    qDebug() << "end";
     array.append((uint8_t)0X80);
 
     return array;

@@ -4,8 +4,8 @@ import Handwritten 1.1
 import ".."
 
 ObjectModel {
-    function addBookselfItem(bid) {
-        var item = HWLI.manuscriptBookshelfCmp.createObject(HWLI.fakeRoot, {
+    function addBookshelfItem(bid) {
+        var item = HWLI.manuscriptBookshelfItemCmp.createObject(HWLI.fakeRoot, {
                                                                 bid: bid
                                                             })
         append(item)
@@ -13,16 +13,16 @@ ObjectModel {
     function loadBookshelf() {
         var bookshelf = MSCR.manuscriptBookshelf()/*.then(function (ret) {
             for (var x in ret) {
-                addBookselfItem(ret[x].b_id)
+                addBookshelfItem(ret[x].b_id)
             }
         })*/
         for (var x in bookshelf)
-            addBookselfItem(bookshelf[x].b_id)
+            addBookshelfItem(bookshelf[x].b_id)
     }
 
     Component.onCompleted: {
         MSCR.newManuscriptBook.connect(function (bid) {
-            addBookselfItem(bid)
+            addBookshelfItem(bid)
         })
     }
 }

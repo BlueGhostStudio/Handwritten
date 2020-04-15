@@ -12,7 +12,7 @@ public:
     explicit ByteArray(QObject *parent = nullptr);
 
     Q_INVOKABLE QJSValue atob(const QByteArray& input) const;
-    Q_INVOKABLE QByteArray btoa(const QByteArray& input) const;
+    Q_INVOKABLE QString btoa(const QByteArray& input) const;
 
     Q_INVOKABLE QByteArray strokeDataFragment(const QByteArray& data, int fl = 0X7) const;
     Q_INVOKABLE QByteArray strokeDataMergeFragment(const QByteArray& data, int fl, int& i) const;

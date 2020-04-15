@@ -69,14 +69,14 @@ HWCanvas {
     }
 
     function loadData(data) {
-        function _drawStrokes_(ret) {
+        /*function _drawStrokes_(ret) {
             clear ()
             tLoading.restart()
             if (ret) {
 //                drawStrokes(ret)
                 tLoading.startLoading(ret)
             }
-        }
+        }*/
 
         if (canvas.available)
             tLoading.startLoading(data)

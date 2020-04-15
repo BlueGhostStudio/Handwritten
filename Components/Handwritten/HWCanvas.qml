@@ -9,7 +9,12 @@ import "HWColor.js" as HWC
     property int hwType: 0
     property bool paperStretch: false
     property alias canvas: canvas
-    property var hwInterface: SOP
+    property alias available: canvas.available
+
+    property var hwInterface: QtObject {
+        signal strokeUpdated(int sHwType, var sHwID, var sHwStroke)
+    }
+        /*: SOP*/
 
     objectName: "HWCanvas"
 
@@ -61,6 +66,10 @@ import "HWColor.js" as HWC
         var ctx = canvas.getContext("2d")
         /*canvas.context*/ctx.clearRect(0, 0, canvas.canvasSize.width, canvas.canvasSize.height)
         canvas.requestPaint()
+    }
+
+    function resetRange () {
+        range = [Number.MAX_VALUE, Number.MAX_VALUE, 0, 0]
     }
 
     function resize(stroke) {

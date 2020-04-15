@@ -32,7 +32,7 @@ Pane {
 
         RowLayout {
             Label {
-                text: qsTr("Phone number: ")
+                text: qsTr("Phone number") + ': '
             }
 
             TextField {

@@ -12,7 +12,6 @@ Flickable {
         //        paperDefine: root.paperDefine
         z: -1
     }*/
-    property real testDist: 0
 
     property var hwInterface: canvas.hwInterface
     property bool writeMode: false // 0 view 1 write
@@ -177,7 +176,7 @@ Flickable {
                             var dy = point1.y - pre.pos.y
                             var dist = Math.pow(dx * dx + dy * dy, 0.5)
 
-                            if (root.state === "readyToWrite" && dist < 1)
+                            if (root.state === "readyToWrite" && dist < 2)
                                 return
 
                             root.state = "writting"
@@ -218,15 +217,6 @@ Flickable {
                             }
 
                             hwInterface.write(hwID, stroke, sync)
-
-                            /*switch(hwType) {
-                            case 0:
-                                HWR.write_slipOfPaper(hwID, stroke, sync)
-                                break
-                            case 2:
-                                HWR.write_manuscript(hwID, stroke)
-                                break
-                            }*/
                         }
                     } else {
                         pan()

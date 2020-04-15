@@ -65,6 +65,19 @@
         <file>Manuscript/ManuscriptBookShelf.ui.qml</file>
         <file>Manuscript/ManuscriptWritingPage.qml</file>
         <file>Manuscript/NewManuscriptBookPage.qml</file>
+        <file>Components/Ui/PaintField.qml</file>
+        <file>Components/Handwritten/PublicManuscript/PublicManuscriptInterface.qml</file>
+        <file>Manuscript/PublicManuscript.qml</file>
+        <file>Components/Handwritten/PublicManuscript/PublicManuscriptModel.qml</file>
+        <file>Components/Handwritten/PublicManuscript/PublicManuscriptItemBase.qml</file>
+        <file>Manuscript/PublishManuscript.qml</file>
+        <file>Manuscript/PublishStep1.qml</file>
+        <file>Manuscript/PublishStep2.qml</file>
+        <file>Manuscript/PublishStep3.qml</file>
+        <file>Manuscript/PublishFinish.qml</file>
+        <file>Manuscript/NewPublicManuscriptBook.qml</file>
+        <file>Manuscript/RewriteTitleBase.qml</file>
+        <file>Components/Handwritten/PublicManuscript/PublicManuscriptPageListItem.qml</file>
     </qresource>
     <qresource prefix="/imgs">
         <file alias="brush-black-1.png">Components/Handwritten/imgs/brush-black-1.png</file>
@@ -109,5 +122,9 @@
         <file alias="openPage.png">Components/Handwritten/icons/openPage.png</file>
         <file alias="expend.png">Components/Handwritten/icons/expend.png</file>
         <file alias="collapse.png">Components/Handwritten/icons/collapse.png</file>
+        <file alias="earth.png">Components/Handwritten/icons/earth.png</file>
+        <file alias="upload.png">Components/Handwritten/icons/upload.png</file>
+        <file alias="bookshelf.png">Components/Handwritten/icons/bookshelf.png</file>
+        <file alias="documents.png">Components/Handwritten/icons/documents.png</file>
     </qresource>
 </RCC>

@@ -73,7 +73,6 @@ UI.TopLevelPage {
         Component.onCompleted: {
             var paperDefine = MSCR.getPaperDefine(paint.hwID);
             if (paperDefine) {
-                console.log(paperDefine.paper, paperDefine.stroke)
                 paint.initialPaper(paperDefine.paper)
                 paint.initialStroke(paperDefine.stroke)
             }

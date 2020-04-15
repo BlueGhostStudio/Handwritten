@@ -10,13 +10,20 @@ UI.InboxPage {
 
     extendedArea: [
         UI.ToolButton {
-            id: tbNewManuscriptBook
-            icon.source: "qrc:/icons/new.png"
+            id: tbPublicManuscript
+            icon.source: "qrc:/icons/earth.png"
         },
         UI.ToolButton {
-            text: "test export"
-            onClicked: MSCR.importNotebook()
-        }
+            id: tbNewManuscriptBook
+            icon.source: "qrc:/icons/new.png"
+        }/*,
+        UI.ToolButton {
+            text: "Import"
+            onClicked: {
+                MSCR.importNotebook()
+            }
+        }*/
+
     ]
 
     ManuscriptBookshelfView {
@@ -47,6 +54,13 @@ UI.InboxPage {
                                       })
             writtingPage.initialNotebook()
             writtingPage.gotoPage(0)
+        }
+    }
+
+    Connections {
+        target: tbPublicManuscript
+        onClicked: {
+            rootWindowStackView.push("PublicManuscript.qml")
         }
     }
 
